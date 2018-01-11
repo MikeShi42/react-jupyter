@@ -46,7 +46,7 @@ class Cell extends Component {
         number = number || raw.execution_count
         const source = raw.input || [ raw.source ]
 
-        const language = raw.language || metadata.language || (metadata.language_info && metadata.language_info.name)
+        const language = raw.language || metadata.language || (metadata.language_info && metadata.language_info.name) || 'python'
 
         const input = <Input showCode={showCode} raw={source} language={language} number={number}/>
         const outputs = (raw.outputs || []).map((o, i) => {

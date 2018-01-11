@@ -16,9 +16,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 272);
+/******/ 	return __webpack_require__(__webpack_require__.s = 276);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -182,7 +182,7 @@ var UNESCAPE_ALL_RE = new RegExp(UNESCAPE_MD_RE.source + '|' + ENTITY_RE.source,
 
 var DIGITAL_ENTITY_TEST_RE = /^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))/i;
 
-var entities = __webpack_require__(13);
+var entities = __webpack_require__(14);
 
 function replaceEntityPattern(match, name) {
   var code = 0;
@@ -363,8 +363,8 @@ function normalizeReference(str) {
 // bundled size (e.g. a browser build).
 //
 exports.lib = {};
-exports.lib.mdurl = __webpack_require__(17);
-exports.lib.ucmicro = __webpack_require__(264);
+exports.lib.mdurl = __webpack_require__(18);
+exports.lib.ucmicro = __webpack_require__(268);
 
 exports.assign = assign;
 exports.isString = isString;
@@ -415,11 +415,11 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(261)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(265)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(260)();
+  module.exports = __webpack_require__(264)();
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
@@ -595,6 +595,12 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+    return [];
+};
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -635,7 +641,7 @@ var _highlight = __webpack_require__(31);
 
 var _highlight2 = _interopRequireDefault(_highlight);
 
-__webpack_require__(276);
+__webpack_require__(280);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -715,6 +721,108 @@ exports.default = Code;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+function makeEmptyFunction(arg) {
+  return function () {
+    return arg;
+  };
+}
+
+/**
+ * This function accepts and discards inputs; it has no side effects. This is
+ * primarily useful idiomatically for overridable function endpoints which
+ * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+ */
+var emptyFunction = function emptyFunction() {};
+
+emptyFunction.thatReturns = makeEmptyFunction;
+emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+emptyFunction.thatReturnsThis = function () {
+  return this;
+};
+emptyFunction.thatReturnsArgument = function (arg) {
+  return arg;
+};
+
+module.exports = emptyFunction;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+}
+
+module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1088,7 +1196,7 @@ Ruler.prototype.getRules = function (chainName) {
 module.exports = Ruler;
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1290,7 +1398,7 @@ Token.prototype.attrJoin = function attrJoin(name, value) {
 module.exports = Token;
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1306,108 +1414,6 @@ module.exports = Token;
 var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-function makeEmptyFunction(arg) {
-  return function () {
-    return arg;
-  };
-}
-
-/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
-var emptyFunction = function emptyFunction() {};
-
-emptyFunction.thatReturns = makeEmptyFunction;
-emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction.thatReturnsThis = function () {
-  return this;
-};
-emptyFunction.thatReturnsArgument = function (arg) {
-  return arg;
-};
-
-module.exports = emptyFunction;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (process.env.NODE_ENV !== 'production') {
-  validateFormat = function validateFormat(format) {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  };
-}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 10 */
@@ -1828,16 +1834,85 @@ function toComment(sourceMap) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var emptyFunction = __webpack_require__(5);
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var warning = emptyFunction;
+
+if (process.env.NODE_ENV !== 'production') {
+  var printWarning = function printWarning(format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning = function warning(condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (format.indexOf('Failed Composite propType: ') === 0) {
+      return; // Ignore CompositeComponent proptype check.
+    }
+
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+module.exports = warning;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 // HTML5 entities map: { name -> utf16string }
 //
 
 
 /*eslint quotes:0*/
 
-module.exports = __webpack_require__(275);
+module.exports = __webpack_require__(279);
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1870,7 +1945,7 @@ module.exports.HTML_TAG_RE = HTML_TAG_RE;
 module.exports.HTML_OPEN_CLOSE_TAG_RE = HTML_OPEN_CLOSE_TAG_RE;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1958,7 +2033,7 @@ module.exports.postProcess = function emphasis(state) {
       delimiters = state.delimiters,
       max = state.delimiters.length;
 
-  for (i = 0; i < max; i++) {
+  for (i = max - 1; i >= 0; i--) {
     startDelim = delimiters[i];
 
     if (startDelim.marker !== 0x5F /* _ */ && startDelim.marker !== 0x2A /* * */) {
@@ -1972,12 +2047,12 @@ module.exports.postProcess = function emphasis(state) {
 
     endDelim = delimiters[startDelim.end];
 
-    // If the next delimiter has the same marker and is adjacent to this one,
+    // If the previous delimiter has the same marker and is adjacent to this one,
     // merge those into one strong delimiter.
     //
     // `<em><em>whatever</em></em>` -> `<strong>whatever</strong>`
     //
-    isStrong = i + 1 < max && delimiters[i + 1].end === startDelim.end - 1 && delimiters[i + 1].token === startDelim.token + 1 && delimiters[startDelim.end - 1].token === endDelim.token - 1 && delimiters[i + 1].marker === startDelim.marker;
+    isStrong = i > 0 && delimiters[i - 1].end === startDelim.end + 1 && delimiters[i - 1].token === startDelim.token - 1 && delimiters[startDelim.end + 1].token === endDelim.token + 1 && delimiters[i - 1].marker === startDelim.marker;
 
     ch = String.fromCharCode(startDelim.marker);
 
@@ -1996,15 +2071,15 @@ module.exports.postProcess = function emphasis(state) {
     token.content = '';
 
     if (isStrong) {
-      state.tokens[delimiters[i + 1].token].content = '';
-      state.tokens[delimiters[startDelim.end - 1].token].content = '';
-      i++;
+      state.tokens[delimiters[i - 1].token].content = '';
+      state.tokens[delimiters[startDelim.end + 1].token].content = '';
+      i--;
     }
   }
 };
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2136,85 +2211,16 @@ module.exports.postProcess = function strikethrough(state) {
 };
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports.encode = __webpack_require__(255);
-module.exports.decode = __webpack_require__(254);
-module.exports.format = __webpack_require__(256);
-module.exports.parse = __webpack_require__(257);
-
-/***/ }),
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 
 
-
-var emptyFunction = __webpack_require__(8);
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var warning = emptyFunction;
-
-if (process.env.NODE_ENV !== 'production') {
-  var printWarning = function printWarning(format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    var argIndex = 0;
-    var message = 'Warning: ' + format.replace(/%s/g, function () {
-      return args[argIndex++];
-    });
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-
-  warning = function warning(condition, format) {
-    if (format === undefined) {
-      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-    }
-
-    if (format.indexOf('Failed Composite propType: ') === 0) {
-      return; // Ignore CompositeComponent proptype check.
-    }
-
-    if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-      }
-
-      printWarning.apply(undefined, [format].concat(args));
-    }
-  };
-}
-
-module.exports = warning;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+module.exports.encode = __webpack_require__(259);
+module.exports.decode = __webpack_require__(258);
+module.exports.format = __webpack_require__(260);
+module.exports.parse = __webpack_require__(261);
 
 /***/ }),
 /* 19 */
@@ -2294,11 +2300,11 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _markdownIt = __webpack_require__(209);
+var _markdownIt = __webpack_require__(213);
 
 var _markdownIt2 = _interopRequireDefault(_markdownIt);
 
-var _markdownItMathjax = __webpack_require__(208);
+var _markdownItMathjax = __webpack_require__(212);
 
 var _markdownItMathjax2 = _interopRequireDefault(_markdownItMathjax);
 
@@ -2647,7 +2653,7 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Worksheet = __webpack_require__(271);
+var _Worksheet = __webpack_require__(275);
 
 var _Worksheet2 = _interopRequireDefault(_Worksheet);
 
@@ -2707,7 +2713,7 @@ exports.default = Notebook;
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(274);
+var content = __webpack_require__(278);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(24)(content, {});
@@ -2770,7 +2776,7 @@ function byteLength(b64) {
 }
 
 function toByteArray(b64) {
-  var i, j, l, tmp, placeHolders, arr;
+  var i, l, tmp, placeHolders, arr;
   var len = b64.length;
   placeHolders = placeHoldersCount(b64);
 
@@ -2781,7 +2787,7 @@ function toByteArray(b64) {
 
   var L = 0;
 
-  for (i = 0, j = 0; i < l; i += 4, j += 3) {
+  for (i = 0; i < l; i += 4) {
     tmp = revLookup[b64.charCodeAt(i)] << 18 | revLookup[b64.charCodeAt(i + 1)] << 12 | revLookup[b64.charCodeAt(i + 2)] << 6 | revLookup[b64.charCodeAt(i + 3)];
     arr[L++] = tmp >> 16 & 0xFF;
     arr[L++] = tmp >> 8 & 0xFF;
@@ -2862,8 +2868,8 @@ function fromByteArray(uint8) {
 
 
 var base64 = __webpack_require__(28);
-var ieee754 = __webpack_require__(204);
-var isArray = __webpack_require__(205);
+var ieee754 = __webpack_require__(208);
+var isArray = __webpack_require__(209);
 
 exports.Buffer = Buffer;
 exports.SlowBuffer = SlowBuffer;
@@ -4650,19 +4656,10 @@ https://highlightjs.org/
     languages: undefined
   };
 
-  // Object map that is used to escape some common HTML characters.
-  var escapeRegexMap = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;'
-  };
-
   /* Utility functions */
 
   function escape(value) {
-    return value.replace(/[&<>]/gm, function (character) {
-      return escapeRegexMap[character];
-    });
+    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   function tag(node) {
@@ -4778,7 +4775,7 @@ https://highlightjs.org/
 
     function open(node) {
       function attr_str(a) {
-        return ' ' + a.nodeName + '="' + escape(a.value) + '"';
+        return ' ' + a.nodeName + '="' + escape(a.value).replace('"', '&quot;') + '"';
       }
       result += '<' + tag(node) + ArrayProto.map.call(node.attributes, attr_str).join('') + '>';
     }
@@ -5322,7 +5319,7 @@ https://highlightjs.org/
     contains: [hljs.BACKSLASH_ESCAPE]
   };
   hljs.PHRASAL_WORDS_MODE = {
-    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|like)\b/
+    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
   };
   hljs.COMMENT = function (begin, end, inherits) {
     var mode = hljs.inherit({
@@ -5409,7 +5406,7 @@ hljs.registerLanguage('applescript', __webpack_require__(38));
 hljs.registerLanguage('cpp', __webpack_require__(62));
 hljs.registerLanguage('arduino', __webpack_require__(39));
 hljs.registerLanguage('armasm', __webpack_require__(40));
-hljs.registerLanguage('xml', __webpack_require__(200));
+hljs.registerLanguage('xml', __webpack_require__(204));
 hljs.registerLanguage('asciidoc', __webpack_require__(41));
 hljs.registerLanguage('aspectj', __webpack_require__(42));
 hljs.registerLanguage('autohotkey', __webpack_require__(43));
@@ -5437,7 +5434,7 @@ hljs.registerLanguage('cs', __webpack_require__(65));
 hljs.registerLanguage('csp', __webpack_require__(66));
 hljs.registerLanguage('css', __webpack_require__(67));
 hljs.registerLanguage('d', __webpack_require__(68));
-hljs.registerLanguage('markdown', __webpack_require__(126));
+hljs.registerLanguage('markdown', __webpack_require__(128));
 hljs.registerLanguage('dart', __webpack_require__(69));
 hljs.registerLanguage('delphi', __webpack_require__(70));
 hljs.registerLanguage('diff', __webpack_require__(71));
@@ -5451,7 +5448,7 @@ hljs.registerLanguage('dust', __webpack_require__(78));
 hljs.registerLanguage('ebnf', __webpack_require__(79));
 hljs.registerLanguage('elixir', __webpack_require__(80));
 hljs.registerLanguage('elm', __webpack_require__(81));
-hljs.registerLanguage('ruby', __webpack_require__(165));
+hljs.registerLanguage('ruby', __webpack_require__(168));
 hljs.registerLanguage('erb', __webpack_require__(82));
 hljs.registerLanguage('erlang-repl', __webpack_require__(83));
 hljs.registerLanguage('erlang', __webpack_require__(84));
@@ -5482,95 +5479,99 @@ hljs.registerLanguage('ini', __webpack_require__(108));
 hljs.registerLanguage('irpf90', __webpack_require__(109));
 hljs.registerLanguage('java', __webpack_require__(110));
 hljs.registerLanguage('javascript', __webpack_require__(111));
-hljs.registerLanguage('json', __webpack_require__(112));
-hljs.registerLanguage('julia', __webpack_require__(113));
-hljs.registerLanguage('kotlin', __webpack_require__(114));
-hljs.registerLanguage('lasso', __webpack_require__(115));
-hljs.registerLanguage('ldif', __webpack_require__(116));
-hljs.registerLanguage('leaf', __webpack_require__(117));
-hljs.registerLanguage('less', __webpack_require__(118));
-hljs.registerLanguage('lisp', __webpack_require__(119));
-hljs.registerLanguage('livecodeserver', __webpack_require__(120));
-hljs.registerLanguage('livescript', __webpack_require__(121));
-hljs.registerLanguage('llvm', __webpack_require__(122));
-hljs.registerLanguage('lsl', __webpack_require__(123));
-hljs.registerLanguage('lua', __webpack_require__(124));
-hljs.registerLanguage('makefile', __webpack_require__(125));
-hljs.registerLanguage('mathematica', __webpack_require__(127));
-hljs.registerLanguage('matlab', __webpack_require__(128));
-hljs.registerLanguage('maxima', __webpack_require__(129));
-hljs.registerLanguage('mel', __webpack_require__(130));
-hljs.registerLanguage('mercury', __webpack_require__(131));
-hljs.registerLanguage('mipsasm', __webpack_require__(132));
-hljs.registerLanguage('mizar', __webpack_require__(133));
-hljs.registerLanguage('perl', __webpack_require__(147));
-hljs.registerLanguage('mojolicious', __webpack_require__(134));
-hljs.registerLanguage('monkey', __webpack_require__(135));
-hljs.registerLanguage('moonscript', __webpack_require__(136));
-hljs.registerLanguage('n1ql', __webpack_require__(137));
-hljs.registerLanguage('nginx', __webpack_require__(138));
-hljs.registerLanguage('nimrod', __webpack_require__(139));
-hljs.registerLanguage('nix', __webpack_require__(140));
-hljs.registerLanguage('nsis', __webpack_require__(141));
-hljs.registerLanguage('objectivec', __webpack_require__(142));
-hljs.registerLanguage('ocaml', __webpack_require__(143));
-hljs.registerLanguage('openscad', __webpack_require__(144));
-hljs.registerLanguage('oxygene', __webpack_require__(145));
-hljs.registerLanguage('parser3', __webpack_require__(146));
-hljs.registerLanguage('pf', __webpack_require__(148));
-hljs.registerLanguage('php', __webpack_require__(149));
-hljs.registerLanguage('pony', __webpack_require__(150));
-hljs.registerLanguage('powershell', __webpack_require__(151));
-hljs.registerLanguage('processing', __webpack_require__(152));
-hljs.registerLanguage('profile', __webpack_require__(153));
-hljs.registerLanguage('prolog', __webpack_require__(154));
-hljs.registerLanguage('protobuf', __webpack_require__(155));
-hljs.registerLanguage('puppet', __webpack_require__(156));
-hljs.registerLanguage('purebasic', __webpack_require__(157));
-hljs.registerLanguage('python', __webpack_require__(158));
-hljs.registerLanguage('q', __webpack_require__(159));
-hljs.registerLanguage('qml', __webpack_require__(160));
-hljs.registerLanguage('r', __webpack_require__(161));
-hljs.registerLanguage('rib', __webpack_require__(162));
-hljs.registerLanguage('roboconf', __webpack_require__(163));
-hljs.registerLanguage('rsl', __webpack_require__(164));
-hljs.registerLanguage('ruleslanguage', __webpack_require__(166));
-hljs.registerLanguage('rust', __webpack_require__(167));
-hljs.registerLanguage('scala', __webpack_require__(168));
-hljs.registerLanguage('scheme', __webpack_require__(169));
-hljs.registerLanguage('scilab', __webpack_require__(170));
-hljs.registerLanguage('scss', __webpack_require__(171));
-hljs.registerLanguage('smali', __webpack_require__(172));
-hljs.registerLanguage('smalltalk', __webpack_require__(173));
-hljs.registerLanguage('sml', __webpack_require__(174));
-hljs.registerLanguage('sqf', __webpack_require__(175));
-hljs.registerLanguage('sql', __webpack_require__(176));
-hljs.registerLanguage('stan', __webpack_require__(177));
-hljs.registerLanguage('stata', __webpack_require__(178));
-hljs.registerLanguage('step21', __webpack_require__(179));
-hljs.registerLanguage('stylus', __webpack_require__(180));
-hljs.registerLanguage('subunit', __webpack_require__(181));
-hljs.registerLanguage('swift', __webpack_require__(182));
-hljs.registerLanguage('taggerscript', __webpack_require__(183));
-hljs.registerLanguage('yaml', __webpack_require__(202));
-hljs.registerLanguage('tap', __webpack_require__(184));
-hljs.registerLanguage('tcl', __webpack_require__(185));
-hljs.registerLanguage('tex', __webpack_require__(186));
-hljs.registerLanguage('thrift', __webpack_require__(187));
-hljs.registerLanguage('tp', __webpack_require__(188));
-hljs.registerLanguage('twig', __webpack_require__(189));
-hljs.registerLanguage('typescript', __webpack_require__(190));
-hljs.registerLanguage('vala', __webpack_require__(191));
-hljs.registerLanguage('vbnet', __webpack_require__(192));
-hljs.registerLanguage('vbscript', __webpack_require__(194));
-hljs.registerLanguage('vbscript-html', __webpack_require__(193));
-hljs.registerLanguage('verilog', __webpack_require__(195));
-hljs.registerLanguage('vhdl', __webpack_require__(196));
-hljs.registerLanguage('vim', __webpack_require__(197));
-hljs.registerLanguage('x86asm', __webpack_require__(198));
-hljs.registerLanguage('xl', __webpack_require__(199));
-hljs.registerLanguage('xquery', __webpack_require__(201));
-hljs.registerLanguage('zephir', __webpack_require__(203));
+hljs.registerLanguage('jboss-cli', __webpack_require__(112));
+hljs.registerLanguage('json', __webpack_require__(113));
+hljs.registerLanguage('julia', __webpack_require__(115));
+hljs.registerLanguage('julia-repl', __webpack_require__(114));
+hljs.registerLanguage('kotlin', __webpack_require__(116));
+hljs.registerLanguage('lasso', __webpack_require__(117));
+hljs.registerLanguage('ldif', __webpack_require__(118));
+hljs.registerLanguage('leaf', __webpack_require__(119));
+hljs.registerLanguage('less', __webpack_require__(120));
+hljs.registerLanguage('lisp', __webpack_require__(121));
+hljs.registerLanguage('livecodeserver', __webpack_require__(122));
+hljs.registerLanguage('livescript', __webpack_require__(123));
+hljs.registerLanguage('llvm', __webpack_require__(124));
+hljs.registerLanguage('lsl', __webpack_require__(125));
+hljs.registerLanguage('lua', __webpack_require__(126));
+hljs.registerLanguage('makefile', __webpack_require__(127));
+hljs.registerLanguage('mathematica', __webpack_require__(129));
+hljs.registerLanguage('matlab', __webpack_require__(130));
+hljs.registerLanguage('maxima', __webpack_require__(131));
+hljs.registerLanguage('mel', __webpack_require__(132));
+hljs.registerLanguage('mercury', __webpack_require__(133));
+hljs.registerLanguage('mipsasm', __webpack_require__(134));
+hljs.registerLanguage('mizar', __webpack_require__(135));
+hljs.registerLanguage('perl', __webpack_require__(149));
+hljs.registerLanguage('mojolicious', __webpack_require__(136));
+hljs.registerLanguage('monkey', __webpack_require__(137));
+hljs.registerLanguage('moonscript', __webpack_require__(138));
+hljs.registerLanguage('n1ql', __webpack_require__(139));
+hljs.registerLanguage('nginx', __webpack_require__(140));
+hljs.registerLanguage('nimrod', __webpack_require__(141));
+hljs.registerLanguage('nix', __webpack_require__(142));
+hljs.registerLanguage('nsis', __webpack_require__(143));
+hljs.registerLanguage('objectivec', __webpack_require__(144));
+hljs.registerLanguage('ocaml', __webpack_require__(145));
+hljs.registerLanguage('openscad', __webpack_require__(146));
+hljs.registerLanguage('oxygene', __webpack_require__(147));
+hljs.registerLanguage('parser3', __webpack_require__(148));
+hljs.registerLanguage('pf', __webpack_require__(150));
+hljs.registerLanguage('php', __webpack_require__(151));
+hljs.registerLanguage('pony', __webpack_require__(152));
+hljs.registerLanguage('powershell', __webpack_require__(153));
+hljs.registerLanguage('processing', __webpack_require__(154));
+hljs.registerLanguage('profile', __webpack_require__(155));
+hljs.registerLanguage('prolog', __webpack_require__(156));
+hljs.registerLanguage('protobuf', __webpack_require__(157));
+hljs.registerLanguage('puppet', __webpack_require__(158));
+hljs.registerLanguage('purebasic', __webpack_require__(159));
+hljs.registerLanguage('python', __webpack_require__(160));
+hljs.registerLanguage('q', __webpack_require__(161));
+hljs.registerLanguage('qml', __webpack_require__(162));
+hljs.registerLanguage('r', __webpack_require__(163));
+hljs.registerLanguage('rib', __webpack_require__(164));
+hljs.registerLanguage('roboconf', __webpack_require__(165));
+hljs.registerLanguage('routeros', __webpack_require__(166));
+hljs.registerLanguage('rsl', __webpack_require__(167));
+hljs.registerLanguage('ruleslanguage', __webpack_require__(169));
+hljs.registerLanguage('rust', __webpack_require__(170));
+hljs.registerLanguage('scala', __webpack_require__(171));
+hljs.registerLanguage('scheme', __webpack_require__(172));
+hljs.registerLanguage('scilab', __webpack_require__(173));
+hljs.registerLanguage('scss', __webpack_require__(174));
+hljs.registerLanguage('shell', __webpack_require__(175));
+hljs.registerLanguage('smali', __webpack_require__(176));
+hljs.registerLanguage('smalltalk', __webpack_require__(177));
+hljs.registerLanguage('sml', __webpack_require__(178));
+hljs.registerLanguage('sqf', __webpack_require__(179));
+hljs.registerLanguage('sql', __webpack_require__(180));
+hljs.registerLanguage('stan', __webpack_require__(181));
+hljs.registerLanguage('stata', __webpack_require__(182));
+hljs.registerLanguage('step21', __webpack_require__(183));
+hljs.registerLanguage('stylus', __webpack_require__(184));
+hljs.registerLanguage('subunit', __webpack_require__(185));
+hljs.registerLanguage('swift', __webpack_require__(186));
+hljs.registerLanguage('taggerscript', __webpack_require__(187));
+hljs.registerLanguage('yaml', __webpack_require__(206));
+hljs.registerLanguage('tap', __webpack_require__(188));
+hljs.registerLanguage('tcl', __webpack_require__(189));
+hljs.registerLanguage('tex', __webpack_require__(190));
+hljs.registerLanguage('thrift', __webpack_require__(191));
+hljs.registerLanguage('tp', __webpack_require__(192));
+hljs.registerLanguage('twig', __webpack_require__(193));
+hljs.registerLanguage('typescript', __webpack_require__(194));
+hljs.registerLanguage('vala', __webpack_require__(195));
+hljs.registerLanguage('vbnet', __webpack_require__(196));
+hljs.registerLanguage('vbscript', __webpack_require__(198));
+hljs.registerLanguage('vbscript-html', __webpack_require__(197));
+hljs.registerLanguage('verilog', __webpack_require__(199));
+hljs.registerLanguage('vhdl', __webpack_require__(200));
+hljs.registerLanguage('vim', __webpack_require__(201));
+hljs.registerLanguage('x86asm', __webpack_require__(202));
+hljs.registerLanguage('xl', __webpack_require__(203));
+hljs.registerLanguage('xquery', __webpack_require__(205));
+hljs.registerLanguage('zephir', __webpack_require__(207));
 
 module.exports = hljs;
 
@@ -5582,44 +5583,194 @@ module.exports = hljs;
 
 
 module.exports = function (hljs) {
-  var IDENT_RE_RU = '[a-zA-Zа-яА-Я][a-zA-Z0-9_а-яА-Я]*';
-  var OneS_KEYWORDS = 'возврат дата для если и или иначе иначеесли исключение конецесли ' + 'конецпопытки конецпроцедуры конецфункции конеццикла константа не перейти перем ' + 'перечисление по пока попытка прервать продолжить процедура строка тогда фс функция цикл ' + 'число экспорт';
-  var OneS_BUILT_IN = 'ansitooem oemtoansi ввестивидсубконто ввестидату ввестизначение ' + 'ввестиперечисление ввестипериод ввестиплансчетов ввестистроку ввестичисло вопрос ' + 'восстановитьзначение врег выбранныйплансчетов вызватьисключение датагод датамесяц ' + 'датачисло добавитьмесяц завершитьработусистемы заголовоксистемы записьжурналарегистрации ' + 'запуститьприложение зафиксироватьтранзакцию значениевстроку значениевстрокувнутр ' + 'значениевфайл значениеизстроки значениеизстрокивнутр значениеизфайла имякомпьютера ' + 'имяпользователя каталогвременныхфайлов каталогиб каталогпользователя каталогпрограммы ' + 'кодсимв командасистемы конгода конецпериодаби конецрассчитанногопериодаби ' + 'конецстандартногоинтервала конквартала конмесяца коннедели лев лог лог10 макс ' + 'максимальноеколичествосубконто мин монопольныйрежим названиеинтерфейса названиенабораправ ' + 'назначитьвид назначитьсчет найти найтипомеченныенаудаление найтиссылки началопериодаби ' + 'началостандартногоинтервала начатьтранзакцию начгода начквартала начмесяца начнедели ' + 'номерднягода номерднянедели номернеделигода нрег обработкаожидания окр описаниеошибки ' + 'основнойжурналрасчетов основнойплансчетов основнойязык открытьформу открытьформумодально ' + 'отменитьтранзакцию очиститьокносообщений периодстр полноеимяпользователя получитьвремята ' + 'получитьдатута получитьдокументта получитьзначенияотбора получитьпозициюта ' + 'получитьпустоезначение получитьта прав праводоступа предупреждение префиксавтонумерации ' + 'пустаястрока пустоезначение рабочаядаттьпустоезначение рабочаядата разделительстраниц ' + 'разделительстрок разм разобратьпозициюдокумента рассчитатьрегистрына ' + 'рассчитатьрегистрыпо сигнал симв символтабуляции создатьобъект сокрл сокрлп сокрп ' + 'сообщить состояние сохранитьзначение сред статусвозврата стрдлина стрзаменить ' + 'стрколичествострок стрполучитьстроку  стрчисловхождений сформироватьпозициюдокумента ' + 'счетпокоду текущаядата текущеевремя типзначения типзначениястр удалитьобъекты ' + 'установитьтана установитьтапо фиксшаблон формат цел шаблон';
-  var DQUOTE = { begin: '""' };
-  var STR_START = {
+
+  // общий паттерн для определения идентификаторов
+  var UNDERSCORE_IDENT_RE = '[A-Za-zА-Яа-яёЁ_][A-Za-zА-Яа-яёЁ_0-9]+';
+
+  // v7 уникальные ключевые слова, отсутствующие в v8 ==> keyword
+  var v7_keywords = 'далее ';
+
+  // v8 ключевые слова ==> keyword
+  var v8_keywords = 'возврат вызватьисключение выполнить для если и из или иначе иначеесли исключение каждого конецесли ' + 'конецпопытки конеццикла не новый перейти перем по пока попытка прервать продолжить тогда цикл экспорт ';
+
+  // keyword : ключевые слова
+  var KEYWORD = v7_keywords + v8_keywords;
+
+  // v7 уникальные директивы, отсутствующие в v8 ==> meta-keyword
+  var v7_meta_keywords = 'загрузитьизфайла ';
+
+  // v8 ключевые слова в инструкциях препроцессора, директивах компиляции, аннотациях ==> meta-keyword
+  var v8_meta_keywords = 'вебклиент вместо внешнеесоединение клиент конецобласти мобильноеприложениеклиент мобильноеприложениесервер ' + 'наклиенте наклиентенасервере наклиентенасерверебезконтекста насервере насерверебезконтекста область перед ' + 'после сервер толстыйклиентобычноеприложение толстыйклиентуправляемоеприложение тонкийклиент ';
+
+  // meta-keyword : ключевые слова в инструкциях препроцессора, директивах компиляции, аннотациях
+  var METAKEYWORD = v7_meta_keywords + v8_meta_keywords;
+
+  // v7 системные константы ==> built_in
+  var v7_system_constants = 'разделительстраниц разделительстрок символтабуляции ';
+
+  // v7 уникальные методы глобального контекста, отсутствующие в v8 ==> built_in
+  var v7_global_context_methods = 'ansitooem oemtoansi ввестивидсубконто ввестиперечисление ввестипериод ввестиплансчетов выбранныйплансчетов ' + 'датагод датамесяц датачисло заголовоксистемы значениевстроку значениеизстроки каталогиб каталогпользователя ' + 'кодсимв конгода конецпериодаби конецрассчитанногопериодаби конецстандартногоинтервала конквартала конмесяца ' + 'коннедели лог лог10 максимальноеколичествосубконто названиеинтерфейса названиенабораправ назначитьвид ' + 'назначитьсчет найтиссылки началопериодаби началостандартногоинтервала начгода начквартала начмесяца ' + 'начнедели номерднягода номерднянедели номернеделигода обработкаожидания основнойжурналрасчетов ' + 'основнойплансчетов основнойязык очиститьокносообщений периодстр получитьвремята получитьдатута ' + 'получитьдокументта получитьзначенияотбора получитьпозициюта получитьпустоезначение получитьта ' + 'префиксавтонумерации пропись пустоезначение разм разобратьпозициюдокумента рассчитатьрегистрына ' + 'рассчитатьрегистрыпо симв создатьобъект статусвозврата стрколичествострок сформироватьпозициюдокумента ' + 'счетпокоду текущеевремя типзначения типзначениястр установитьтана установитьтапо фиксшаблон шаблон ';
+
+  // v8 методы глобального контекста ==> built_in
+  var v8_global_context_methods = 'acos asin atan base64значение base64строка cos exp log log10 pow sin sqrt tan xmlзначение xmlстрока ' + 'xmlтип xmlтипзнч активноеокно безопасныйрежим безопасныйрежимразделенияданных булево ввестидату ввестизначение ' + 'ввестистроку ввестичисло возможностьчтенияxml вопрос восстановитьзначение врег выгрузитьжурналрегистрации ' + 'выполнитьобработкуоповещения выполнитьпроверкуправдоступа вычислить год данныеформывзначение дата день деньгода ' + 'деньнедели добавитьмесяц заблокироватьданныедляредактирования заблокироватьработупользователя завершитьработусистемы ' + 'загрузитьвнешнююкомпоненту закрытьсправку записатьjson записатьxml записатьдатуjson записьжурналарегистрации ' + 'заполнитьзначениясвойств запроситьразрешениепользователя запуститьприложение запуститьсистему зафиксироватьтранзакцию ' + 'значениевданныеформы значениевстрокувнутр значениевфайл значениезаполнено значениеизстрокивнутр значениеизфайла ' + 'изxmlтипа импортмоделиxdto имякомпьютера имяпользователя инициализироватьпредопределенныеданные информацияобошибке ' + 'каталогбиблиотекимобильногоустройства каталогвременныхфайлов каталогдокументов каталогпрограммы кодироватьстроку ' + 'кодлокализацииинформационнойбазы кодсимвола командасистемы конецгода конецдня конецквартала конецмесяца конецминуты ' + 'конецнедели конецчаса конфигурациябазыданныхизмененадинамически конфигурацияизменена копироватьданныеформы ' + 'копироватьфайл краткоепредставлениеошибки лев макс местноевремя месяц мин минута монопольныйрежим найти ' + 'найтинедопустимыесимволыxml найтиокнопонавигационнойссылке найтипомеченныенаудаление найтипоссылкам найтифайлы ' + 'началогода началодня началоквартала началомесяца началоминуты началонедели началочаса начатьзапросразрешенияпользователя ' + 'начатьзапускприложения начатькопированиефайла начатьперемещениефайла начатьподключениевнешнейкомпоненты ' + 'начатьподключениерасширенияработыскриптографией начатьподключениерасширенияработысфайлами начатьпоискфайлов ' + 'начатьполучениекаталогавременныхфайлов начатьполучениекаталогадокументов начатьполучениерабочегокаталогаданныхпользователя ' + 'начатьполучениефайлов начатьпомещениефайла начатьпомещениефайлов начатьсозданиедвоичныхданныхизфайла начатьсозданиекаталога ' + 'начатьтранзакцию начатьудалениефайлов начатьустановкувнешнейкомпоненты начатьустановкурасширенияработыскриптографией ' + 'начатьустановкурасширенияработысфайлами неделягода необходимостьзавершениясоединения номерсеансаинформационнойбазы ' + 'номерсоединенияинформационнойбазы нрег нстр обновитьинтерфейс обновитьнумерациюобъектов обновитьповторноиспользуемыезначения ' + 'обработкапрерыванияпользователя объединитьфайлы окр описаниеошибки оповестить оповеститьобизменении ' + 'отключитьобработчикзапросанастроекклиенталицензирования отключитьобработчикожидания отключитьобработчикоповещения ' + 'открытьзначение открытьиндекссправки открытьсодержаниесправки открытьсправку открытьформу открытьформумодально ' + 'отменитьтранзакцию очиститьжурналрегистрации очиститьнастройкипользователя очиститьсообщения параметрыдоступа ' + 'перейтипонавигационнойссылке переместитьфайл подключитьвнешнююкомпоненту ' + 'подключитьобработчикзапросанастроекклиенталицензирования подключитьобработчикожидания подключитьобработчикоповещения ' + 'подключитьрасширениеработыскриптографией подключитьрасширениеработысфайлами подробноепредставлениеошибки ' + 'показатьвводдаты показатьвводзначения показатьвводстроки показатьвводчисла показатьвопрос показатьзначение ' + 'показатьинформациюобошибке показатьнакарте показатьоповещениепользователя показатьпредупреждение полноеимяпользователя ' + 'получитьcomобъект получитьxmlтип получитьадреспоместоположению получитьблокировкусеансов получитьвремязавершенияспящегосеанса ' + 'получитьвремязасыпанияпассивногосеанса получитьвремяожиданияблокировкиданных получитьданныевыбора ' + 'получитьдополнительныйпараметрклиенталицензирования получитьдопустимыекодылокализации получитьдопустимыечасовыепояса ' + 'получитьзаголовокклиентскогоприложения получитьзаголовоксистемы получитьзначенияотборажурналарегистрации ' + 'получитьидентификаторконфигурации получитьизвременногохранилища получитьимявременногофайла ' + 'получитьимяклиенталицензирования получитьинформациюэкрановклиента получитьиспользованиежурналарегистрации ' + 'получитьиспользованиесобытияжурналарегистрации получитькраткийзаголовокприложения получитьмакетоформления ' + 'получитьмаскувсефайлы получитьмаскувсефайлыклиента получитьмаскувсефайлысервера получитьместоположениепоадресу ' + 'получитьминимальнуюдлинупаролейпользователей получитьнавигационнуюссылку получитьнавигационнуюссылкуинформационнойбазы ' + 'получитьобновлениеконфигурациибазыданных получитьобновлениепредопределенныхданныхинформационнойбазы получитьобщиймакет ' + 'получитьобщуюформу получитьокна получитьоперативнуюотметкувремени получитьотключениебезопасногорежима ' + 'получитьпараметрыфункциональныхопцийинтерфейса получитьполноеимяпредопределенногозначения ' + 'получитьпредставлениянавигационныхссылок получитьпроверкусложностипаролейпользователей получитьразделительпути ' + 'получитьразделительпутиклиента получитьразделительпутисервера получитьсеансыинформационнойбазы ' + 'получитьскоростьклиентскогосоединения получитьсоединенияинформационнойбазы получитьсообщенияпользователю ' + 'получитьсоответствиеобъектаиформы получитьсоставстандартногоинтерфейсаodata получитьструктурухранениябазыданных ' + 'получитьтекущийсеансинформационнойбазы получитьфайл получитьфайлы получитьформу получитьфункциональнуюопцию ' + 'получитьфункциональнуюопциюинтерфейса получитьчасовойпоясинформационнойбазы пользователиос поместитьвовременноехранилище ' + 'поместитьфайл поместитьфайлы прав праводоступа предопределенноезначение представлениекодалокализации представлениепериода ' + 'представлениеправа представлениеприложения представлениесобытияжурналарегистрации представлениечасовогопояса предупреждение ' + 'прекратитьработусистемы привилегированныйрежим продолжитьвызов прочитатьjson прочитатьxml прочитатьдатуjson пустаястрока ' + 'рабочийкаталогданныхпользователя разблокироватьданныедляредактирования разделитьфайл разорватьсоединениесвнешнимисточникомданных ' + 'раскодироватьстроку рольдоступна секунда сигнал символ скопироватьжурналрегистрации смещениелетнеговремени ' + 'смещениестандартноговремени соединитьбуферыдвоичныхданных создатькаталог создатьфабрикуxdto сокрл сокрлп сокрп сообщить ' + 'состояние сохранитьзначение сохранитьнастройкипользователя сред стрдлина стрзаканчиваетсяна стрзаменить стрнайти стрначинаетсяс ' + 'строка строкасоединенияинформационнойбазы стрполучитьстроку стрразделить стрсоединить стрсравнить стрчисловхождений ' + 'стрчислострок стршаблон текущаядата текущаядатасеанса текущаяуниверсальнаядата текущаяуниверсальнаядатавмиллисекундах ' + 'текущийвариантинтерфейсаклиентскогоприложения текущийвариантосновногошрифтаклиентскогоприложения текущийкодлокализации ' + 'текущийрежимзапуска текущийязык текущийязыксистемы тип типзнч транзакцияактивна трег удалитьданныеинформационнойбазы ' + 'удалитьизвременногохранилища удалитьобъекты удалитьфайлы универсальноевремя установитьбезопасныйрежим ' + 'установитьбезопасныйрежимразделенияданных установитьблокировкусеансов установитьвнешнююкомпоненту ' + 'установитьвремязавершенияспящегосеанса установитьвремязасыпанияпассивногосеанса установитьвремяожиданияблокировкиданных ' + 'установитьзаголовокклиентскогоприложения установитьзаголовоксистемы установитьиспользованиежурналарегистрации ' + 'установитьиспользованиесобытияжурналарегистрации установитькраткийзаголовокприложения ' + 'установитьминимальнуюдлинупаролейпользователей установитьмонопольныйрежим установитьнастройкиклиенталицензирования ' + 'установитьобновлениепредопределенныхданныхинформационнойбазы установитьотключениебезопасногорежима ' + 'установитьпараметрыфункциональныхопцийинтерфейса установитьпривилегированныйрежим ' + 'установитьпроверкусложностипаролейпользователей установитьрасширениеработыскриптографией ' + 'установитьрасширениеработысфайлами установитьсоединениесвнешнимисточникомданных установитьсоответствиеобъектаиформы ' + 'установитьсоставстандартногоинтерфейсаodata установитьчасовойпоясинформационнойбазы установитьчасовойпояссеанса ' + 'формат цел час часовойпояс часовойпояссеанса число числопрописью этоадресвременногохранилища ';
+
+  // v8 свойства глобального контекста ==> built_in
+  var v8_global_context_property = 'wsссылки библиотекакартинок библиотекамакетовоформлениякомпоновкиданных библиотекастилей бизнеспроцессы ' + 'внешниеисточникиданных внешниеобработки внешниеотчеты встроенныепокупки главныйинтерфейс главныйстиль ' + 'документы доставляемыеуведомления журналыдокументов задачи информацияобинтернетсоединении использованиерабочейдаты ' + 'историяработыпользователя константы критерииотбора метаданные обработки отображениерекламы отправкадоставляемыхуведомлений ' + 'отчеты панельзадачос параметрзапуска параметрысеанса перечисления планывидоврасчета планывидовхарактеристик ' + 'планыобмена планысчетов полнотекстовыйпоиск пользователиинформационнойбазы последовательности проверкавстроенныхпокупок ' + 'рабочаядата расширенияконфигурации регистрыбухгалтерии регистрынакопления регистрырасчета регистрысведений ' + 'регламентныезадания сериализаторxdto справочники средствагеопозиционирования средствакриптографии средствамультимедиа ' + 'средстваотображениярекламы средствапочты средствателефонии фабрикаxdto файловыепотоки фоновыезадания хранилищанастроек ' + 'хранилищевариантовотчетов хранилищенастроекданныхформ хранилищеобщихнастроек хранилищепользовательскихнастроекдинамическихсписков ' + 'хранилищепользовательскихнастроекотчетов хранилищесистемныхнастроек ';
+
+  // built_in : встроенные или библиотечные объекты (константы, классы, функции)
+  var BUILTIN = v7_system_constants + v7_global_context_methods + v8_global_context_methods + v8_global_context_property;
+
+  // v8 системные наборы значений ==> class
+  var v8_system_sets_of_values = 'webцвета windowsцвета windowsшрифты библиотекакартинок рамкистиля символы цветастиля шрифтыстиля ';
+
+  // v8 системные перечисления - интерфейсные ==> class
+  var v8_system_enums_interface = 'автоматическоесохранениеданныхформывнастройках автонумерациявформе автораздвижениесерий ' + 'анимациядиаграммы вариантвыравниванияэлементовизаголовков вариантуправлениявысотойтаблицы ' + 'вертикальнаяпрокруткаформы вертикальноеположение вертикальноеположениеэлемента видгруппыформы ' + 'виддекорацииформы виддополненияэлементаформы видизмененияданных видкнопкиформы видпереключателя ' + 'видподписейкдиаграмме видполяформы видфлажка влияниеразмеранапузырекдиаграммы горизонтальноеположение ' + 'горизонтальноеположениеэлемента группировкаколонок группировкаподчиненныхэлементовформы ' + 'группыиэлементы действиеперетаскивания дополнительныйрежимотображения допустимыедействияперетаскивания ' + 'интервалмеждуэлементамиформы использованиевывода использованиеполосыпрокрутки ' + 'используемоезначениеточкибиржевойдиаграммы историявыборапривводе источникзначенийоситочекдиаграммы ' + 'источникзначенияразмерапузырькадиаграммы категориягруппыкоманд максимумсерий начальноеотображениедерева ' + 'начальноеотображениесписка обновлениетекстаредактирования ориентациядендрограммы ориентациядиаграммы ' + 'ориентацияметокдиаграммы ориентацияметоксводнойдиаграммы ориентацияэлементаформы отображениевдиаграмме ' + 'отображениевлегендедиаграммы отображениегруппыкнопок отображениезаголовкашкалыдиаграммы ' + 'отображениезначенийсводнойдиаграммы отображениезначенияизмерительнойдиаграммы ' + 'отображениеинтерваладиаграммыганта отображениекнопки отображениекнопкивыбора отображениеобсужденийформы ' + 'отображениеобычнойгруппы отображениеотрицательныхзначенийпузырьковойдиаграммы отображениепанелипоиска ' + 'отображениеподсказки отображениепредупрежденияприредактировании отображениеразметкиполосырегулирования ' + 'отображениестраницформы отображениетаблицы отображениетекстазначениядиаграммыганта ' + 'отображениеуправленияобычнойгруппы отображениефигурыкнопки палитрацветовдиаграммы поведениеобычнойгруппы ' + 'поддержкамасштабадендрограммы поддержкамасштабадиаграммыганта поддержкамасштабасводнойдиаграммы ' + 'поисквтаблицепривводе положениезаголовкаэлементаформы положениекартинкикнопкиформы ' + 'положениекартинкиэлементаграфическойсхемы положениекоманднойпанелиформы положениекоманднойпанелиэлементаформы ' + 'положениеопорнойточкиотрисовки положениеподписейкдиаграмме положениеподписейшкалызначенийизмерительнойдиаграммы ' + 'положениесостоянияпросмотра положениестрокипоиска положениетекстасоединительнойлинии положениеуправленияпоиском ' + 'положениешкалывремени порядокотображенияточекгоризонтальнойгистограммы порядоксерийвлегендедиаграммы ' + 'размеркартинки расположениезаголовкашкалыдиаграммы растягиваниеповертикалидиаграммыганта ' + 'режимавтоотображениясостояния режимвводастроктаблицы режимвыборанезаполненного режимвыделениядаты ' + 'режимвыделениястрокитаблицы режимвыделениятаблицы режимизмененияразмера режимизменениясвязанногозначения ' + 'режимиспользованиядиалогапечати режимиспользованияпараметракоманды режиммасштабированияпросмотра ' + 'режимосновногоокнаклиентскогоприложения режимоткрытияокнаформы режимотображениявыделения ' + 'режимотображениягеографическойсхемы режимотображениязначенийсерии режимотрисовкисеткиграфическойсхемы ' + 'режимполупрозрачностидиаграммы режимпробеловдиаграммы режимразмещениянастранице режимредактированияколонки ' + 'режимсглаживаниядиаграммы режимсглаживанияиндикатора режимсписказадач сквозноевыравнивание ' + 'сохранениеданныхформывнастройках способзаполнениятекстазаголовкашкалыдиаграммы ' + 'способопределенияограничивающегозначениядиаграммы стандартнаягруппакоманд стандартноеоформление ' + 'статусоповещенияпользователя стильстрелки типаппроксимациилиниитрендадиаграммы типдиаграммы ' + 'типединицышкалывремени типимпортасерийслоягеографическойсхемы типлиниигеографическойсхемы типлиниидиаграммы ' + 'типмаркерагеографическойсхемы типмаркерадиаграммы типобластиоформления ' + 'типорганизацииисточникаданныхгеографическойсхемы типотображениясериислоягеографическойсхемы ' + 'типотображенияточечногообъектагеографическойсхемы типотображенияшкалыэлементалегендыгеографическойсхемы ' + 'типпоискаобъектовгеографическойсхемы типпроекциигеографическойсхемы типразмещенияизмерений ' + 'типразмещенияреквизитовизмерений типрамкиэлементауправления типсводнойдиаграммы ' + 'типсвязидиаграммыганта типсоединениязначенийпосериямдиаграммы типсоединенияточекдиаграммы ' + 'типсоединительнойлинии типстороныэлементаграфическойсхемы типформыотчета типшкалырадарнойдиаграммы ' + 'факторлиниитрендадиаграммы фигуракнопки фигурыграфическойсхемы фиксациявтаблице форматдняшкалывремени ' + 'форматкартинки ширинаподчиненныхэлементовформы ';
+
+  // v8 системные перечисления - свойства прикладных объектов ==> class
+  var v8_system_enums_objects_properties = 'виддвижениябухгалтерии виддвижениянакопления видпериодарегистрарасчета видсчета видточкимаршрутабизнеспроцесса ' + 'использованиеагрегатарегистранакопления использованиегруппиэлементов использованиережимапроведения ' + 'использованиесреза периодичностьагрегатарегистранакопления режимавтовремя режимзаписидокумента режимпроведениядокумента ';
+
+  // v8 системные перечисления - планы обмена ==> class
+  var v8_system_enums_exchange_plans = 'авторегистрацияизменений допустимыйномерсообщения отправкаэлементаданных получениеэлементаданных ';
+
+  // v8 системные перечисления - табличный документ ==> class
+  var v8_system_enums_tabular_document = 'использованиерасшифровкитабличногодокумента ориентациястраницы положениеитоговколоноксводнойтаблицы ' + 'положениеитоговстроксводнойтаблицы положениетекстаотносительнокартинки расположениезаголовкагруппировкитабличногодокумента ' + 'способчтениязначенийтабличногодокумента типдвустороннейпечати типзаполненияобластитабличногодокумента ' + 'типкурсоровтабличногодокумента типлиниирисункатабличногодокумента типлинииячейкитабличногодокумента ' + 'типнаправленияпереходатабличногодокумента типотображениявыделениятабличногодокумента типотображениялинийсводнойтаблицы ' + 'типразмещениятекстатабличногодокумента типрисункатабличногодокумента типсмещениятабличногодокумента ' + 'типузоратабличногодокумента типфайлатабличногодокумента точностьпечати чередованиерасположениястраниц ';
+
+  // v8 системные перечисления - планировщик ==> class
+  var v8_system_enums_sheduler = 'отображениевремениэлементовпланировщика ';
+
+  // v8 системные перечисления - форматированный документ ==> class
+  var v8_system_enums_formatted_document = 'типфайлаформатированногодокумента ';
+
+  // v8 системные перечисления - запрос ==> class
+  var v8_system_enums_query = 'обходрезультатазапроса типзаписизапроса ';
+
+  // v8 системные перечисления - построитель отчета ==> class
+  var v8_system_enums_report_builder = 'видзаполнениярасшифровкипостроителяотчета типдобавленияпредставлений типизмеренияпостроителяотчета типразмещенияитогов ';
+
+  // v8 системные перечисления - работа с файлами ==> class
+  var v8_system_enums_files = 'доступкфайлу режимдиалогавыборафайла режимоткрытияфайла ';
+
+  // v8 системные перечисления - построитель запроса ==> class
+  var v8_system_enums_query_builder = 'типизмеренияпостроителязапроса ';
+
+  // v8 системные перечисления - анализ данных ==> class
+  var v8_system_enums_data_analysis = 'видданныханализа методкластеризации типединицыинтервалавременианализаданных типзаполнениятаблицырезультатаанализаданных ' + 'типиспользованиячисловыхзначенийанализаданных типисточникаданныхпоискаассоциаций типколонкианализаданныхдереворешений ' + 'типколонкианализаданныхкластеризация типколонкианализаданныхобщаястатистика типколонкианализаданныхпоискассоциаций ' + 'типколонкианализаданныхпоискпоследовательностей типколонкимоделипрогноза типмерырасстоянияанализаданных ' + 'типотсеченияправилассоциации типполяанализаданных типстандартизациианализаданных типупорядочиванияправилассоциациианализаданных ' + 'типупорядочиванияшаблоновпоследовательностейанализаданных типупрощениядереварешений ';
+
+  // v8 системные перечисления - xml, json, xs, dom, xdto, web-сервисы ==> class
+  var v8_system_enums_xml_json_xs_dom_xdto_ws = 'wsнаправлениепараметра вариантxpathxs вариантзаписидатыjson вариантпростоготипаxs видгруппымоделиxs видфасетаxdto ' + 'действиепостроителяdom завершенностьпростоготипаxs завершенностьсоставноготипаxs завершенностьсхемыxs запрещенныеподстановкиxs ' + 'исключениягруппподстановкиxs категорияиспользованияатрибутаxs категорияограниченияидентичностиxs категорияограниченияпространствименxs ' + 'методнаследованияxs модельсодержимогоxs назначениетипаxml недопустимыеподстановкиxs обработкапробельныхсимволовxs обработкасодержимогоxs ' + 'ограничениезначенияxs параметрыотбораузловdom переносстрокjson позициявдокументеdom пробельныесимволыxml типатрибутаxml типзначенияjson ' + 'типканоническогоxml типкомпонентыxs типпроверкиxml типрезультатаdomxpath типузлаdom типузлаxml формаxml формапредставленияxs ' + 'форматдатыjson экранированиесимволовjson ';
+
+  // v8 системные перечисления - система компоновки данных ==> class
+  var v8_system_enums_data_composition_system = 'видсравнениякомпоновкиданных действиеобработкирасшифровкикомпоновкиданных направлениесортировкикомпоновкиданных ' + 'расположениевложенныхэлементоврезультатакомпоновкиданных расположениеитоговкомпоновкиданных расположениегруппировкикомпоновкиданных ' + 'расположениеполейгруппировкикомпоновкиданных расположениеполякомпоновкиданных расположениереквизитовкомпоновкиданных ' + 'расположениересурсовкомпоновкиданных типбухгалтерскогоостаткакомпоновкиданных типвыводатекстакомпоновкиданных ' + 'типгруппировкикомпоновкиданных типгруппыэлементовотборакомпоновкиданных типдополненияпериодакомпоновкиданных ' + 'типзаголовкаполейкомпоновкиданных типмакетагруппировкикомпоновкиданных типмакетаобластикомпоновкиданных типостаткакомпоновкиданных ' + 'типпериодакомпоновкиданных типразмещениятекстакомпоновкиданных типсвязинаборовданныхкомпоновкиданных типэлементарезультатакомпоновкиданных ' + 'расположениелегендыдиаграммыкомпоновкиданных типпримененияотборакомпоновкиданных режимотображенияэлементанастройкикомпоновкиданных ' + 'режимотображениянастроеккомпоновкиданных состояниеэлементанастройкикомпоновкиданных способвосстановлениянастроеккомпоновкиданных ' + 'режимкомпоновкирезультата использованиепараметракомпоновкиданных автопозицияресурсовкомпоновкиданных ' + 'вариантиспользованиягруппировкикомпоновкиданных расположениересурсоввдиаграммекомпоновкиданных фиксациякомпоновкиданных ' + 'использованиеусловногооформлениякомпоновкиданных ';
+
+  // v8 системные перечисления - почта ==> class
+  var v8_system_enums_email = 'важностьинтернетпочтовогосообщения обработкатекстаинтернетпочтовогосообщения способкодированияинтернетпочтовоговложения ' + 'способкодированиянеasciiсимволовинтернетпочтовогосообщения типтекстапочтовогосообщения протоколинтернетпочты ' + 'статусразборапочтовогосообщения ';
+
+  // v8 системные перечисления - журнал регистрации ==> class
+  var v8_system_enums_logbook = 'режимтранзакциизаписижурналарегистрации статустранзакциизаписижурналарегистрации уровеньжурналарегистрации ';
+
+  // v8 системные перечисления - криптография ==> class
+  var v8_system_enums_cryptography = 'расположениехранилищасертификатовкриптографии режимвключениясертификатовкриптографии режимпроверкисертификатакриптографии ' + 'типхранилищасертификатовкриптографии ';
+
+  // v8 системные перечисления - ZIP ==> class
+  var v8_system_enums_zip = 'кодировкаименфайловвzipфайле методсжатияzip методшифрованияzip режимвосстановленияпутейфайловzip режимобработкиподкаталоговzip ' + 'режимсохраненияпутейzip уровеньсжатияzip ';
+
+  // v8 системные перечисления - 
+  // Блокировка данных, Фоновые задания, Автоматизированное тестирование,
+  // Доставляемые уведомления, Встроенные покупки, Интернет, Работа с двоичными данными ==> class
+  var v8_system_enums_other = 'звуковоеоповещение направлениепереходакстроке позициявпотоке порядокбайтов режимблокировкиданных режимуправленияблокировкойданных ' + 'сервисвстроенныхпокупок состояниефоновогозадания типподписчикадоставляемыхуведомлений уровеньиспользованиязащищенногосоединенияftp ';
+
+  // v8 системные перечисления - схема запроса ==> class
+  var v8_system_enums_request_schema = 'направлениепорядкасхемызапроса типдополненияпериодамисхемызапроса типконтрольнойточкисхемызапроса типобъединениясхемызапроса ' + 'типпараметрадоступнойтаблицысхемызапроса типсоединениясхемызапроса ';
+
+  // v8 системные перечисления - свойства объектов метаданных ==> class
+  var v8_system_enums_properties_of_metadata_objects = 'httpметод автоиспользованиеобщегореквизита автопрефиксномеразадачи вариантвстроенногоязыка видиерархии видрегистранакопления ' + 'видтаблицывнешнегоисточникаданных записьдвиженийприпроведении заполнениепоследовательностей индексирование ' + 'использованиебазыпланавидоврасчета использованиебыстроговыбора использованиеобщегореквизита использованиеподчинения ' + 'использованиеполнотекстовогопоиска использованиеразделяемыхданныхобщегореквизита использованиереквизита ' + 'назначениеиспользованияприложения назначениерасширенияконфигурации направлениепередачи обновлениепредопределенныхданных ' + 'оперативноепроведение основноепредставлениевидарасчета основноепредставлениевидахарактеристики основноепредставлениезадачи ' + 'основноепредставлениепланаобмена основноепредставлениесправочника основноепредставлениесчета перемещениеграницыприпроведении ' + 'периодичностьномерабизнеспроцесса периодичностьномерадокумента периодичностьрегистрарасчета периодичностьрегистрасведений ' + 'повторноеиспользованиевозвращаемыхзначений полнотекстовыйпоискпривводепостроке принадлежностьобъекта проведение ' + 'разделениеаутентификацииобщегореквизита разделениеданныхобщегореквизита разделениерасширенийконфигурацииобщегореквизита ' + 'режимавтонумерацииобъектов режимзаписирегистра режимиспользованиямодальности ' + 'режимиспользованиясинхронныхвызововрасширенийплатформыивнешнихкомпонент режимповторногоиспользованиясеансов ' + 'режимполученияданныхвыборапривводепостроке режимсовместимости режимсовместимостиинтерфейса ' + 'режимуправленияблокировкойданныхпоумолчанию сериикодовпланавидовхарактеристик сериикодовпланасчетов ' + 'сериикодовсправочника созданиепривводе способвыбора способпоискастрокипривводепостроке способредактирования ' + 'типданныхтаблицывнешнегоисточникаданных типкодапланавидоврасчета типкодасправочника типмакета типномерабизнеспроцесса ' + 'типномерадокумента типномеразадачи типформы удалениедвижений ';
+
+  // v8 системные перечисления - разные ==> class
+  var v8_system_enums_differents = 'важностьпроблемыприменениярасширенияконфигурации вариантинтерфейсаклиентскогоприложения вариантмасштабаформклиентскогоприложения ' + 'вариантосновногошрифтаклиентскогоприложения вариантстандартногопериода вариантстандартнойдатыначала видграницы видкартинки ' + 'видотображенияполнотекстовогопоиска видрамки видсравнения видцвета видчисловогозначения видшрифта допустимаядлина допустимыйзнак ' + 'использованиеbyteordermark использованиеметаданныхполнотекстовогопоиска источникрасширенийконфигурации клавиша кодвозвратадиалога ' + 'кодировкаxbase кодировкатекста направлениепоиска направлениесортировки обновлениепредопределенныхданных обновлениеприизмененииданных ' + 'отображениепанелиразделов проверказаполнения режимдиалогавопрос режимзапускаклиентскогоприложения режимокругления режимоткрытияформприложения ' + 'режимполнотекстовогопоиска скоростьклиентскогосоединения состояниевнешнегоисточникаданных состояниеобновленияконфигурациибазыданных ' + 'способвыборасертификатаwindows способкодированиястроки статуссообщения типвнешнейкомпоненты типплатформы типповеденияклавишиenter ' + 'типэлементаинформацииовыполненииобновленияконфигурациибазыданных уровеньизоляциитранзакций хешфункция частидаты';
+
+  // class: встроенные наборы значений, системные перечисления (содержат дочерние значения, обращения к которым через разыменование)
+  var CLASS = v8_system_sets_of_values + v8_system_enums_interface + v8_system_enums_objects_properties + v8_system_enums_exchange_plans + v8_system_enums_tabular_document + v8_system_enums_sheduler + v8_system_enums_formatted_document + v8_system_enums_query + v8_system_enums_report_builder + v8_system_enums_files + v8_system_enums_query_builder + v8_system_enums_data_analysis + v8_system_enums_xml_json_xs_dom_xdto_ws + v8_system_enums_data_composition_system + v8_system_enums_email + v8_system_enums_logbook + v8_system_enums_cryptography + v8_system_enums_zip + v8_system_enums_other + v8_system_enums_request_schema + v8_system_enums_properties_of_metadata_objects + v8_system_enums_differents;
+
+  // v8 общие объекты (у объектов есть конструктор, экземпляры создаются методом НОВЫЙ) ==> type
+  var v8_shared_object = 'comобъект ftpсоединение httpзапрос httpсервисответ httpсоединение wsопределения wsпрокси xbase анализданных аннотацияxs ' + 'блокировкаданных буфердвоичныхданных включениеxs выражениекомпоновкиданных генераторслучайныхчисел географическаясхема ' + 'географическиекоординаты графическаясхема группамоделиxs данныерасшифровкикомпоновкиданных двоичныеданные дендрограмма ' + 'диаграмма диаграммаганта диалогвыборафайла диалогвыборацвета диалогвыборашрифта диалограсписаниярегламентногозадания ' + 'диалогредактированиястандартногопериода диапазон документdom документhtml документацияxs доставляемоеуведомление ' + 'записьdom записьfastinfoset записьhtml записьjson записьxml записьzipфайла записьданных записьтекста записьузловdom ' + 'запрос защищенноесоединениеopenssl значенияполейрасшифровкикомпоновкиданных извлечениетекста импортxs интернетпочта ' + 'интернетпочтовоесообщение интернетпочтовыйпрофиль интернетпрокси интернетсоединение информациядляприложенияxs ' + 'использованиеатрибутаxs использованиесобытияжурналарегистрации источникдоступныхнастроеккомпоновкиданных ' + 'итераторузловdom картинка квалификаторыдаты квалификаторыдвоичныхданных квалификаторыстроки квалификаторычисла ' + 'компоновщикмакетакомпоновкиданных компоновщикнастроеккомпоновкиданных конструктормакетаоформлениякомпоновкиданных ' + 'конструкторнастроеккомпоновкиданных конструкторформатнойстроки линия макеткомпоновкиданных макетобластикомпоновкиданных ' + 'макетоформлениякомпоновкиданных маскаxs менеджеркриптографии наборсхемxml настройкикомпоновкиданных настройкисериализацииjson ' + 'обработкакартинок обработкарасшифровкикомпоновкиданных обходдереваdom объявлениеатрибутаxs объявлениенотацииxs ' + 'объявлениеэлементаxs описаниеиспользованиясобытиядоступжурналарегистрации ' + 'описаниеиспользованиясобытияотказвдоступежурналарегистрации описаниеобработкирасшифровкикомпоновкиданных ' + 'описаниепередаваемогофайла описаниетипов определениегруппыатрибутовxs определениегруппымоделиxs ' + 'определениеограниченияидентичностиxs определениепростоготипаxs определениесоставноготипаxs определениетипадокументаdom ' + 'определенияxpathxs отборкомпоновкиданных пакетотображаемыхдокументов параметрвыбора параметркомпоновкиданных ' + 'параметрызаписиjson параметрызаписиxml параметрычтенияxml переопределениеxs планировщик полеанализаданных ' + 'полекомпоновкиданных построительdom построительзапроса построительотчета построительотчетаанализаданных ' + 'построительсхемxml поток потоквпамяти почта почтовоесообщение преобразованиеxsl преобразованиекканоническомуxml ' + 'процессорвыводарезультатакомпоновкиданныхвколлекциюзначений процессорвыводарезультатакомпоновкиданныхвтабличныйдокумент ' + 'процессоркомпоновкиданных разыменовательпространствименdom рамка расписаниерегламентногозадания расширенноеимяxml ' + 'результатчтенияданных своднаядиаграмма связьпараметравыбора связьпотипу связьпотипукомпоновкиданных сериализаторxdto ' + 'сертификатклиентаwindows сертификатклиентафайл сертификаткриптографии сертификатыудостоверяющихцентровwindows ' + 'сертификатыудостоверяющихцентровфайл сжатиеданных системнаяинформация сообщениепользователю сочетаниеклавиш ' + 'сравнениезначений стандартнаядатаначала стандартныйпериод схемаxml схемакомпоновкиданных табличныйдокумент ' + 'текстовыйдокумент тестируемоеприложение типданныхxml уникальныйидентификатор фабрикаxdto файл файловыйпоток ' + 'фасетдлиныxs фасетколичестваразрядовдробнойчастиxs фасетмаксимальноговключающегозначенияxs ' + 'фасетмаксимальногоисключающегозначенияxs фасетмаксимальнойдлиныxs фасетминимальноговключающегозначенияxs ' + 'фасетминимальногоисключающегозначенияxs фасетминимальнойдлиныxs фасетобразцаxs фасетобщегоколичестваразрядовxs ' + 'фасетперечисленияxs фасетпробельныхсимволовxs фильтрузловdom форматированнаястрока форматированныйдокумент ' + 'фрагментxs хешированиеданных хранилищезначения цвет чтениеfastinfoset чтениеhtml чтениеjson чтениеxml чтениеzipфайла ' + 'чтениеданных чтениетекста чтениеузловdom шрифт элементрезультатакомпоновкиданных ';
+
+  // v8 универсальные коллекции значений ==> type
+  var v8_universal_collection = 'comsafearray деревозначений массив соответствие списокзначений структура таблицазначений фиксированнаяструктура ' + 'фиксированноесоответствие фиксированныймассив ';
+
+  // type : встроенные типы
+  var TYPE = v8_shared_object + v8_universal_collection;
+
+  // literal : примитивные типы
+  var LITERAL = 'null истина ложь неопределено';
+
+  // number : числа
+  var NUMBERS = hljs.inherit(hljs.NUMBER_MODE);
+
+  // string : строки
+  var STRINGS = {
     className: 'string',
-    begin: '"', end: '"|$',
-    contains: [DQUOTE]
+    begin: '"|\\|', end: '"|$',
+    contains: [{ begin: '""' }]
   };
-  var STR_CONT = {
-    className: 'string',
-    begin: '\\|', end: '"|$',
-    contains: [DQUOTE]
+
+  // number : даты
+  var DATE = {
+    begin: "'", end: "'", excludeBegin: true, excludeEnd: true,
+    contains: [{
+      className: 'number',
+      begin: '\\d{4}([\\.\\\\/:-]?\\d{2}){0,5}'
+    }]
+  };
+
+  // comment : комментарии
+  var COMMENTS = hljs.inherit(hljs.C_LINE_COMMENT_MODE);
+
+  // meta : инструкции препроцессора, директивы компиляции
+  var META = {
+    className: 'meta',
+    lexemes: UNDERSCORE_IDENT_RE,
+    begin: '#|&', end: '$',
+    keywords: { 'meta-keyword': KEYWORD + METAKEYWORD },
+    contains: [COMMENTS]
+  };
+
+  // symbol : метка goto
+  var SYMBOL = {
+    className: 'symbol',
+    begin: '~', end: ';|:', excludeEnd: true
+  };
+
+  // function : объявление процедур и функций
+  var FUNCTION = {
+    className: 'function',
+    lexemes: UNDERSCORE_IDENT_RE,
+    variants: [{ begin: 'процедура|функция', end: '\\)', keywords: 'процедура функция' }, { begin: 'конецпроцедуры|конецфункции', keywords: 'конецпроцедуры конецфункции' }],
+    contains: [{
+      begin: '\\(', end: '\\)', endsParent: true,
+      contains: [{
+        className: 'params',
+        lexemes: UNDERSCORE_IDENT_RE,
+        begin: UNDERSCORE_IDENT_RE, end: ',', excludeEnd: true, endsWithParent: true,
+        keywords: {
+          keyword: 'знач',
+          literal: LITERAL
+        },
+        contains: [NUMBERS, STRINGS, DATE]
+      }, COMMENTS]
+    }, hljs.inherit(hljs.TITLE_MODE, { begin: UNDERSCORE_IDENT_RE })]
   };
 
   return {
     case_insensitive: true,
-    lexemes: IDENT_RE_RU,
-    keywords: { keyword: OneS_KEYWORDS, built_in: OneS_BUILT_IN },
-    contains: [hljs.C_LINE_COMMENT_MODE, hljs.NUMBER_MODE, STR_START, STR_CONT, {
-      className: 'function',
-      begin: '(процедура|функция)', end: '$',
-      lexemes: IDENT_RE_RU,
-      keywords: 'процедура функция',
-      contains: [{
-        begin: 'экспорт', endsWithParent: true,
-        lexemes: IDENT_RE_RU,
-        keywords: 'экспорт',
-        contains: [hljs.C_LINE_COMMENT_MODE]
-      }, {
-        className: 'params',
-        begin: '\\(', end: '\\)',
-        lexemes: IDENT_RE_RU,
-        keywords: 'знач',
-        contains: [STR_START, STR_CONT]
-      }, hljs.C_LINE_COMMENT_MODE, hljs.inherit(hljs.TITLE_MODE, { begin: IDENT_RE_RU })]
-    }, { className: 'meta', begin: '#', end: '$' }, { className: 'number', begin: '\'\\d{2}\\.\\d{2}\\.(\\d{2}|\\d{4})\'' } // date
-    ]
+    lexemes: UNDERSCORE_IDENT_RE,
+    keywords: {
+      keyword: KEYWORD,
+      built_in: BUILTIN,
+      class: CLASS,
+      type: TYPE,
+      literal: LITERAL
+    },
+    contains: [META, FUNCTION, COMMENTS, SYMBOL, NUMBERS, STRINGS, DATE]
   };
 };
 
@@ -6080,15 +6231,15 @@ module.exports = function (hljs) {
       variants: [{ begin: '[#$=]?0x[0-9a-f]+' }, //hex
       { begin: '[#$=]?0b[01]+' }, //bin
       { begin: '[#$=]\\d+' }, //literal
-      { begin: '\\b\\d+' } //bare number
-      ],
+      { begin: '\\b\\d+' //bare number
+      }],
       relevance: 0
     }, {
       className: 'symbol',
       variants: [{ begin: '^[a-z_\\.\\$][a-z0-9_\\.\\$]+' }, //ARM syntax
       { begin: '^\\s*[a-z_\\.\\$][a-z0-9_\\.\\$]+:' }, //GNU ARM syntax
-      { begin: '[=#]\\w+' } //label reference
-      ],
+      { begin: '[=#]\\w+' //label reference
+      }],
       relevance: 0
     }]
   };
@@ -6331,7 +6482,8 @@ module.exports = function (hljs) {
       illegal: /["\[\]]/,
       contains: [{
         begin: hljs.UNDERSCORE_IDENT_RE + '\\s*\\(',
-        keywords: KEYWORDS + ' ' + SHORTKEYS
+        keywords: KEYWORDS + ' ' + SHORTKEYS,
+        relevance: 0
       }, hljs.QUOTE_STRING_MODE]
     }, {
       // this prevents 'new Name(...), or throw ...' from being recognized as a function definition
@@ -6374,34 +6526,42 @@ module.exports = function (hljs) {
 
 module.exports = function (hljs) {
   var BACKTICK_ESCAPE = {
-    begin: /`[\s\S]/
+    begin: '`[\\s\\S]'
   };
 
   return {
     case_insensitive: true,
+    aliases: ['ahk'],
     keywords: {
-      keyword: 'Break Continue Else Gosub If Loop Return While',
+      keyword: 'Break Continue Critical Exit ExitApp Gosub Goto New OnExit Pause return SetBatchLines SetTimer Suspend Thread Throw Until ahk_id ahk_class ahk_pid ahk_exe ahk_group',
       literal: 'A|0 true false NOT AND OR',
       built_in: 'ComSpec Clipboard ClipboardAll ErrorLevel'
     },
     contains: [{
       className: 'built_in',
       begin: 'A_[a-zA-Z0-9]+'
-    }, BACKTICK_ESCAPE, hljs.inherit(hljs.QUOTE_STRING_MODE, { contains: [BACKTICK_ESCAPE] }), hljs.COMMENT(';', '$', { relevance: 0 }), {
+    }, BACKTICK_ESCAPE, hljs.inherit(hljs.QUOTE_STRING_MODE, { contains: [BACKTICK_ESCAPE] }), hljs.COMMENT(';', '$', { relevance: 0 }), hljs.C_BLOCK_COMMENT_MODE, {
       className: 'number',
       begin: hljs.NUMBER_RE,
       relevance: 0
     }, {
-      className: 'variable', // FIXME
-      begin: '%', end: '%',
-      illegal: '\\n',
-      contains: [BACKTICK_ESCAPE]
+      className: 'subst', // FIXED
+      begin: '%(?=[a-zA-Z0-9#_$@])', end: '%',
+      illegal: '[^a-zA-Z0-9#_$@]'
+    }, {
+      className: 'built_in',
+      begin: '^\\s*\\w+\\s*,'
+      //I don't really know if this is totally relevant
+    }, {
+      className: 'meta',
+      begin: '^\\s*#\w+', end: '$',
+      relevance: 0
     }, {
       className: 'symbol',
       contains: [BACKTICK_ESCAPE],
-      variants: [{ begin: '^[^\\n";]+::(?!=)' }, { begin: '^[^\\n";]+:(?!=)', relevance: 0 } // zero relevance as it catches a lot of things
-      // followed by a single ':' in many languages
-      ]
+      variants: [{ begin: '^[^\\n";]+::(?!=)' }, { begin: '^[^\\n";]+:(?!=)', relevance: 0 // zero relevance as it catches a lot of things
+        // followed by a single ':' in many languages
+      }]
     }, {
       // consecutive commas, not for highlighting but just for relevance
       begin: ',\\s*,'
@@ -6647,7 +6807,7 @@ module.exports = function (hljs) {
 
   return {
     aliases: ['sh', 'zsh'],
-    lexemes: /-?[a-z\._]+/,
+    lexemes: /\b-?[a-z\._]+\b/,
     keywords: {
       keyword: 'if then else elif fi for while in do done case esac function',
       literal: 'true false',
@@ -6867,15 +7027,15 @@ module.exports = function (hljs) {
       beginKeywords: 'struct enum', end: /\{/,
       illegal: /\n/,
       contains: [hljs.inherit(hljs.TITLE_MODE, {
-        starts: { endsWithParent: true, excludeEnd: true } // hack: eating everything after the first title
-      })]
+        starts: { endsWithParent: true, excludeEnd: true // hack: eating everything after the first title
+        } })]
     }, {
       className: 'class',
       beginKeywords: 'interface', end: /\{/,
       illegal: /\n/,
       contains: [hljs.inherit(hljs.TITLE_MODE, {
-        starts: { endsWithParent: true, excludeEnd: true } // hack: eating everything after the first title
-      })]
+        starts: { endsWithParent: true, excludeEnd: true // hack: eating everything after the first title
+        } })]
     }]
   };
 };
@@ -6952,8 +7112,8 @@ module.exports = function (hljs) {
       keyword: 'if let in with where case of class instance otherwise ' + 'implementation definition system module from import qualified as ' + 'special code inline foreign export ccall stdcall generic derive ' + 'infix infixl infixr',
       literal: 'True False'
     },
-    contains: [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE, { begin: '->|<-[|:]?|::|#!?|>>=|\\{\\||\\|\\}|:==|=:|\\.\\.|<>|`' } // relevance booster
-    ]
+    contains: [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE, { begin: '->|<-[|:]?|::|#!?|>>=|\\{\\||\\|\\}|:==|=:|\\.\\.|<>|`' // relevance booster
+    }]
   };
 };
 
@@ -7041,6 +7201,7 @@ module.exports = function (hljs) {
   LIST.contains = [hljs.COMMENT('comment', ''), NAME, BODY];
   BODY.contains = DEFAULT_CONTAINS;
   COLLECTION.contains = DEFAULT_CONTAINS;
+  HINT_COL.contains = [COLLECTION];
 
   return {
     aliases: ['clj'],
@@ -7209,8 +7370,8 @@ module.exports = function (hljs) {
       excludeBegin: true,
       begin: '\\|\\s*',
       end: '\\w+'
-    }, { begin: /[-=]>/ } // relevance booster
-    ]
+    }, { begin: /[-=]>/ // relevance booster
+    }]
   };
 };
 
@@ -7353,7 +7514,7 @@ module.exports = function (hljs) {
 
   var NUMBERS = {
     className: 'number',
-    variants: [{ begin: '\\b(0b[01\']+)' }, { begin: '\\b([\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)(u|U|l|L|ul|UL|f|F|b|B)' }, { begin: '(-?)(\\b0[xX][a-fA-F0-9\']+|(\\b[\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)([eE][-+]?[\\d\']+)?)' }],
+    variants: [{ begin: '\\b(0b[01\']+)' }, { begin: '(-?)\\b([\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)(u|U|l|L|ul|UL|f|F|b|B)' }, { begin: '(-?)(\\b0[xX][a-fA-F0-9\']+|(\\b[\\d\']+(\\.[\\d\']*)?|\\.[\\d\']+)([eE][-+]?[\\d\']+)?)' }],
     relevance: 0
   };
 
@@ -7375,7 +7536,7 @@ module.exports = function (hljs) {
   var FUNCTION_TITLE = hljs.IDENT_RE + '\\s*\\(';
 
   var CPP_KEYWORDS = {
-    keyword: 'int float while private char catch import module export virtual operator sizeof ' + 'dynamic_cast|10 typedef const_cast|10 const struct for static_cast|10 union namespace ' + 'unsigned long volatile static protected bool template mutable if public friend ' + 'do goto auto void enum else break extern using class asm case typeid ' + 'short reinterpret_cast|10 default double register explicit signed typename try this ' + 'switch continue inline delete alignof constexpr decltype ' + 'noexcept static_assert thread_local restrict _Bool complex _Complex _Imaginary ' + 'atomic_bool atomic_char atomic_schar ' + 'atomic_uchar atomic_short atomic_ushort atomic_int atomic_uint atomic_long atomic_ulong atomic_llong ' + 'atomic_ullong new throw return',
+    keyword: 'int float while private char catch import module export virtual operator sizeof ' + 'dynamic_cast|10 typedef const_cast|10 const for static_cast|10 union namespace ' + 'unsigned long volatile static protected bool template mutable if public friend ' + 'do goto auto void enum else break extern using asm case typeid ' + 'short reinterpret_cast|10 default double register explicit signed typename try this ' + 'switch continue inline delete alignof constexpr decltype ' + 'noexcept static_assert thread_local restrict _Bool complex _Complex _Imaginary ' + 'atomic_bool atomic_char atomic_schar ' + 'atomic_uchar atomic_short atomic_ushort atomic_int atomic_uint atomic_long atomic_ulong atomic_llong ' + 'atomic_ullong new throw return ' + 'and or not',
     built_in: 'std string cin cout cerr clog stdin stdout stderr stringstream istringstream ostringstream ' + 'auto_ptr deque list queue stack vector map set bitset multiset multimap unordered_set ' + 'unordered_map unordered_multiset unordered_multimap array shared_ptr abort abs acos ' + 'asin atan2 atan calloc ceil cosh cos exit exp fabs floor fmod fprintf fputs free frexp ' + 'fscanf isalnum isalpha iscntrl isdigit isgraph islower isprint ispunct isspace isupper ' + 'isxdigit tolower toupper labs ldexp log10 log malloc realloc memchr memcmp memcpy memset modf pow ' + 'printf putchar puts scanf sinh sin snprintf sprintf sqrt sscanf strcat strchr strcmp ' + 'strcpy strcspn strlen strncat strncmp strncpy strpbrk strrchr strspn strstr tanh tan ' + 'vfprintf vprintf vsprintf endl initializer_list unique_ptr',
     literal: 'true false nullptr NULL'
   };
@@ -7424,6 +7585,11 @@ module.exports = function (hljs) {
         relevance: 0,
         contains: [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, STRINGS, NUMBERS, CPP_PRIMITIVE_TYPES]
       }, hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, PREPROCESSOR]
+    }, {
+      className: 'class',
+      beginKeywords: 'class struct', end: /[{;:]/,
+      contains: [{ begin: /</, end: />/, contains: ['self'] }, // skip generic stuff
+      hljs.TITLE_MODE]
     }]),
     exports: {
       preprocessor: PREPROCESSOR,
@@ -7531,7 +7697,7 @@ module.exports = function (hljs) {
   var RE_STARTER = '!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|' + '>>|>|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~';
   var CRYSTAL_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\][=?]?';
   var CRYSTAL_KEYWORDS = {
-    keyword: 'abstract alias as asm begin break case class def do else elsif end ensure enum extend for fun if ifdef ' + 'include instance_sizeof is_a? lib macro module next of out pointerof private protected rescue responds_to? ' + 'return require self sizeof struct super then type typeof union unless until when while with yield ' + '__DIR__ __FILE__ __LINE__',
+    keyword: 'abstract alias as as? asm begin break case class def do else elsif end ensure enum extend for fun if ' + 'include instance_sizeof is_a? lib macro module next nil? of out pointerof private protected rescue responds_to? ' + 'return require select self sizeof struct super then type typeof union uninitialized unless until when while with yield ' + '__DIR__ __END_LINE__ __FILE__ __LINE__',
     literal: 'false nil true'
   };
   var SUBST = {
@@ -7553,7 +7719,12 @@ module.exports = function (hljs) {
   var STRING = {
     className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-    variants: [{ begin: /'/, end: /'/ }, { begin: /"/, end: /"/ }, { begin: /`/, end: /`/ }, { begin: '%w?\\(', end: '\\)', contains: recursiveParen('\\(', '\\)') }, { begin: '%w?\\[', end: '\\]', contains: recursiveParen('\\[', '\\]') }, { begin: '%w?{', end: '}', contains: recursiveParen('{', '}') }, { begin: '%w?<', end: '>', contains: recursiveParen('<', '>') }, { begin: '%w?/', end: '/' }, { begin: '%w?%', end: '%' }, { begin: '%w?-', end: '-' }, { begin: '%w?\\|', end: '\\|' }],
+    variants: [{ begin: /'/, end: /'/ }, { begin: /"/, end: /"/ }, { begin: /`/, end: /`/ }, { begin: '%w?\\(', end: '\\)', contains: recursiveParen('\\(', '\\)') }, { begin: '%w?\\[', end: '\\]', contains: recursiveParen('\\[', '\\]') }, { begin: '%w?{', end: '}', contains: recursiveParen('{', '}') }, { begin: '%w?<', end: '>', contains: recursiveParen('<', '>') }, { begin: '%w?/', end: '/' }, { begin: '%w?%', end: '%' }, { begin: '%w?-', end: '-' }, { begin: '%w?\\|', end: '\\|' }, { begin: /<<-\w+$/, end: /^\s*\w+$/ }],
+    relevance: 0
+  };
+  var Q_STRING = {
+    className: 'string',
+    variants: [{ begin: '%q\\(', end: '\\)', contains: recursiveParen('\\(', '\\)') }, { begin: '%q\\[', end: '\\]', contains: recursiveParen('\\[', '\\]') }, { begin: '%q{', end: '}', contains: recursiveParen('{', '}') }, { begin: '%q<', end: '>', contains: recursiveParen('<', '>') }, { begin: '%q/', end: '/' }, { begin: '%q%', end: '%' }, { begin: '%q-', end: '-' }, { begin: '%q\\|', end: '\\|' }, { begin: /<<-'\w+'$/, end: /^\s*\w+$/ }],
     relevance: 0
   };
   var REGEXP = {
@@ -7576,12 +7747,12 @@ module.exports = function (hljs) {
     begin: '@\\[', end: '\\]',
     contains: [hljs.inherit(hljs.QUOTE_STRING_MODE, { className: 'meta-string' })]
   };
-  var CRYSTAL_DEFAULT_CONTAINS = [EXPANSION, STRING, REGEXP, REGEXP2, ATTRIBUTE, hljs.HASH_COMMENT_MODE, {
+  var CRYSTAL_DEFAULT_CONTAINS = [EXPANSION, STRING, Q_STRING, REGEXP, REGEXP2, ATTRIBUTE, hljs.HASH_COMMENT_MODE, {
     className: 'class',
     beginKeywords: 'class module struct', end: '$|;',
     illegal: /=/,
-    contains: [hljs.HASH_COMMENT_MODE, hljs.inherit(hljs.TITLE_MODE, { begin: '[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?' }), { begin: '<' } // relevance booster for inheritance
-    ]
+    contains: [hljs.HASH_COMMENT_MODE, hljs.inherit(hljs.TITLE_MODE, { begin: '[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?' }), { begin: '<' // relevance booster for inheritance
+    }]
   }, {
     className: 'class',
     beginKeywords: 'lib enum union', end: '$|;',
@@ -7639,7 +7810,7 @@ module.exports = function (hljs) {
   var KEYWORDS = {
     keyword:
     // Normal keywords.
-    'abstract as base bool break byte case catch char checked const continue decimal ' + 'default delegate do double else enum event explicit extern finally fixed float ' + 'for foreach goto if implicit in int interface internal is lock long ' + 'object operator out override params private protected public readonly ref sbyte ' + 'sealed short sizeof stackalloc static string struct switch this try typeof ' + 'uint ulong unchecked unsafe ushort using virtual void volatile while ' + 'nameof ' +
+    'abstract as base bool break byte case catch char checked const continue decimal ' + 'default delegate do double enum event explicit extern finally fixed float ' + 'for foreach goto if implicit in int interface internal is lock long nameof ' + 'object operator out override params private protected public readonly ref sbyte ' + 'sealed short sizeof stackalloc static string struct switch this try typeof ' + 'uint ulong unchecked unsafe ushort using virtual void volatile while ' +
     // Contextual keywords.
     'add alias ascending async await by descending dynamic equals from get global group into join ' + 'let on orderby partial remove select set value var where yield',
     literal: 'null false true'
@@ -7679,6 +7850,7 @@ module.exports = function (hljs) {
   };
 
   var TYPE_IDENT_RE = hljs.IDENT_RE + '(<' + hljs.IDENT_RE + '(\\s*,\\s*' + hljs.IDENT_RE + ')*>)?(\\[\\])?';
+
   return {
     aliases: ['csharp'],
     keywords: KEYWORDS,
@@ -7698,7 +7870,9 @@ module.exports = function (hljs) {
     }), hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, {
       className: 'meta',
       begin: '#', end: '$',
-      keywords: { 'meta-keyword': 'if else elif endif define undef warning error line region endregion pragma checksum' }
+      keywords: {
+        'meta-keyword': 'if else elif endif define undef warning error line region endregion pragma checksum'
+      }
     }, STRING, hljs.C_NUMBER_MODE, {
       beginKeywords: 'class interface', end: /[{;=]/,
       illegal: /[^\s:]/,
@@ -7708,14 +7882,19 @@ module.exports = function (hljs) {
       illegal: /[^\s:]/,
       contains: [hljs.inherit(hljs.TITLE_MODE, { begin: '[a-zA-Z](\\.?\\w)*' }), hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE]
     }, {
+      // [Attributes("")]
+      className: 'meta',
+      begin: '^\\s*\\[', excludeBegin: true, end: '\\]', excludeEnd: true,
+      contains: [{ className: 'meta-string', begin: /"/, end: /"/ }]
+    }, {
       // Expression keywords prevent 'keyword Name(...)' from being
       // recognized as a function definition
-      beginKeywords: 'new return throw await',
+      beginKeywords: 'new return throw await else',
       relevance: 0
     }, {
       className: 'function',
-      begin: '(' + TYPE_IDENT_RE + '\\s+)+' + hljs.IDENT_RE + '\\s*\\(', returnBegin: true, end: /[{;=]/,
-      excludeEnd: true,
+      begin: '(' + TYPE_IDENT_RE + '\\s+)+' + hljs.IDENT_RE + '\\s*\\(', returnBegin: true,
+      end: /[{;=]/, excludeEnd: true,
       keywords: KEYWORDS,
       contains: [{
         begin: hljs.IDENT_RE + '\\s*\\(', returnBegin: true,
@@ -8282,9 +8461,9 @@ module.exports = function (hljs) {
   return {
     aliases: ['docker'],
     case_insensitive: true,
-    keywords: 'from maintainer expose env user onbuild',
+    keywords: 'from maintainer expose env arg user onbuild stopsignal',
     contains: [hljs.HASH_COMMENT_MODE, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, hljs.NUMBER_MODE, {
-      beginKeywords: 'run cmd entrypoint volume add copy workdir label healthcheck',
+      beginKeywords: 'run cmd entrypoint volume add copy workdir label healthcheck shell',
       starts: {
         end: /[^\\]\n/,
         subLanguage: 'bash'
@@ -8674,8 +8853,9 @@ module.exports = function (hljs) {
     // Literals and names.
 
     // TODO: characters.
-    hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE, CONSTRUCTOR, hljs.inherit(hljs.TITLE_MODE, { begin: '^[_a-z][\\w\']*' }), COMMENT, { begin: '->|<-' } // No markup, relevance booster
-    ]
+    hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE, CONSTRUCTOR, hljs.inherit(hljs.TITLE_MODE, { begin: '^[_a-z][\\w\']*' }), COMMENT, { begin: '->|<-' // No markup, relevance booster
+    }],
+    illegal: /;/
   };
 };
 
@@ -8839,8 +9019,8 @@ module.exports = function (hljs) {
       lexemes: '-' + hljs.IDENT_RE,
       keywords: '-module -record -undef -export -ifdef -ifndef -author -copyright -doc -vsn ' + '-import -include -include_lib -compile -define -else -endif -file -behaviour ' + '-behavior -spec',
       contains: [PARAMS]
-    }, NUMBER, hljs.QUOTE_STRING_MODE, RECORD_ACCESS, VAR1, VAR2, TUPLE, { begin: /\.$/ } // relevance booster
-    ]
+    }, NUMBER, hljs.QUOTE_STRING_MODE, RECORD_ACCESS, VAR1, VAR2, TUPLE, { begin: /\.$/ // relevance booster
+    }]
   };
 };
 
@@ -9131,7 +9311,7 @@ module.exports = function (hljs) {
       returnBegin: true,
       contains: [{ // Function title
         className: 'title',
-        begin: /^[a-z][a-z0-9_]+/
+        begin: /^[a-z0-9_]+/
       }, PARAMS, SYMBOLS]
     }, hljs.C_NUMBER_MODE, SYMBOLS]
   };
@@ -9700,8 +9880,8 @@ module.exports = function (hljs) {
     // Literals and names.
 
     // TODO: characters.
-    hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE, CONSTRUCTOR, hljs.inherit(hljs.TITLE_MODE, { begin: '^[_a-z][\\w\']*' }), COMMENT, { begin: '->|<-' } // No markup, relevance booster
-    ]
+    hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE, CONSTRUCTOR, hljs.inherit(hljs.TITLE_MODE, { begin: '^[_a-z][\\w\']*' }), COMMENT, { begin: '->|<-' // No markup, relevance booster
+    }]
   };
 };
 
@@ -9721,7 +9901,7 @@ module.exports = function (hljs) {
   return {
     aliases: ['hx'],
     keywords: {
-      keyword: 'break callback case cast catch continue default do dynamic else enum extern ' + 'for function here if import in inline never new override package private get set ' + 'public return static super switch this throw trace try typedef untyped using var while ' + HAXE_BASIC_TYPES,
+      keyword: 'break case cast catch continue default do dynamic else enum extern ' + 'for function here if import in inline never new override package private get set ' + 'public return static super switch this throw trace try typedef untyped using var while ' + HAXE_BASIC_TYPES,
       built_in: 'trace this',
       literal: 'true false null _'
     },
@@ -10325,6 +10505,50 @@ module.exports = function (hljs) {
 
 
 module.exports = function (hljs) {
+  var PARAM = {
+    begin: /[\w-]+ *=/, returnBegin: true,
+    relevance: 0,
+    contains: [{ className: 'attr', begin: /[\w-]+/ }]
+  };
+  var PARAMSBLOCK = {
+    className: 'params',
+    begin: /\(/,
+    end: /\)/,
+    contains: [PARAM],
+    relevance: 0
+  };
+  var OPERATION = {
+    className: 'function',
+    begin: /:[\w\-.]+/,
+    relevance: 0
+  };
+  var PATH = {
+    className: 'string',
+    begin: /\B(([\/.])[\w\-.\/=]+)+/
+  };
+  var COMMAND_PARAMS = {
+    className: 'params',
+    begin: /--[\w\-=\/]+/
+  };
+  return {
+    aliases: ['wildfly-cli'],
+    lexemes: '[a-z\-]+',
+    keywords: {
+      keyword: 'alias batch cd clear command connect connection-factory connection-info data-source deploy ' + 'deployment-info deployment-overlay echo echo-dmr help history if jdbc-driver-info jms-queue|20 jms-topic|20 ls ' + 'patch pwd quit read-attribute read-operation reload rollout-plan run-batch set shutdown try unalias ' + 'undeploy unset version xa-data-source', // module
+      literal: 'true false'
+    },
+    contains: [hljs.HASH_COMMENT_MODE, hljs.QUOTE_STRING_MODE, COMMAND_PARAMS, OPERATION, PATH, PARAMSBLOCK]
+  };
+};
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (hljs) {
   var LITERALS = { literal: 'true false null' };
   var TYPES = [hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE];
   var VALUE_CONTAINER = {
@@ -10356,7 +10580,36 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 113 */
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (hljs) {
+  return {
+    contains: [{
+      className: 'meta',
+      begin: /^julia>/,
+      relevance: 10,
+      starts: {
+        // end the highlighting if we are on a new line and the line does not have at
+        // least six spaces in the beginning
+        end: /^(?![ ]{6})/,
+        subLanguage: 'julia'
+      },
+      // jldoctest Markdown blocks are used in the Julia manual and package docs indicate
+      // code snippets that should be verified when the documentation is built. They can be
+      // either REPL-like or script-like, but are usually REPL-like and therefore we apply
+      // julia-repl highlighting to them. More information can be found in Documenter's
+      // manual: https://juliadocs.github.io/Documenter.jl/latest/man/doctests.html
+      aliases: ['jldoctest']
+    }]
+  };
+};
+
+/***/ }),
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10365,73 +10618,52 @@ module.exports = function (hljs) {
 module.exports = function (hljs) {
   // Since there are numerous special names in Julia, it is too much trouble
   // to maintain them by hand. Hence these names (i.e. keywords, literals and
-  // built-ins) are automatically generated from Julia (v0.3.0 and v0.4.1)
-  // itself through following scripts for each.
+  // built-ins) are automatically generated from Julia v0.6 itself through
+  // the following scripts for each.
 
   var KEYWORDS = {
-    // # keyword generator
-    // println("in")
+    // # keyword generator, multi-word keywords handled manually below
+    // foreach(println, ["in", "isa", "where"])
     // for kw in Base.REPLCompletions.complete_keyword("")
-    //     println(kw)
+    //     if !(contains(kw, " ") || kw == "struct")
+    //         println(kw)
+    //     end
     // end
-    keyword: 'in abstract baremodule begin bitstype break catch ccall const continue do else elseif end export ' + 'finally for function global if immutable import importall let local macro module quote return try type ' + 'typealias using while',
+    keyword: 'in isa where ' + 'baremodule begin break catch ccall const continue do else elseif end export false finally for function ' + 'global if import importall let local macro module quote return true try using while ' +
+    // legacy, to be deprecated in the next release
+    'type immutable abstract bitstype typealias ',
 
     // # literal generator
     // println("true")
     // println("false")
     // for name in Base.REPLCompletions.completions("", 0)[1]
     //     try
-    //         s = symbol(name)
-    //         v = eval(s)
-    //         if !isa(v, Function) &&
-    //            !isa(v, DataType) &&
-    //            !isa(v, IntrinsicFunction) &&
-    //            !issubtype(typeof(v), Tuple) &&
-    //            !isa(v, Union) &&
-    //            !isa(v, Module) &&
-    //            !isa(v, TypeConstructor) &&
-    //            !isa(v, TypeVar) &&
-    //            !isa(v, Colon)
+    //         v = eval(Symbol(name))
+    //         if !(v isa Function || v isa Type || v isa TypeVar || v isa Module || v isa Colon)
     //             println(name)
     //         end
     //     end
     // end
-    literal:
-    // v0.3
-    'true false ARGS CPU_CORES C_NULL DL_LOAD_PATH DevNull ENDIAN_BOM ENV I|0 Inf Inf16 Inf32 ' + 'InsertionSort JULIA_HOME LOAD_PATH MS_ASYNC MS_INVALIDATE MS_SYNC MergeSort NaN NaN16 NaN32 OS_NAME QuickSort ' + 'RTLD_DEEPBIND RTLD_FIRST RTLD_GLOBAL RTLD_LAZY RTLD_LOCAL RTLD_NODELETE RTLD_NOLOAD RTLD_NOW RoundDown ' + 'RoundFromZero RoundNearest RoundToZero RoundUp STDERR STDIN STDOUT VERSION WORD_SIZE catalan cglobal e|0 eu|0 ' + 'eulergamma golden im nothing pi γ π φ ' +
-    // v0.4 (diff)
-    'Inf64 NaN64 RoundNearestTiesAway RoundNearestTiesUp ',
+    literal: 'true false ' + 'ARGS C_NULL DevNull ENDIAN_BOM ENV I Inf Inf16 Inf32 Inf64 InsertionSort JULIA_HOME LOAD_PATH MergeSort ' + 'NaN NaN16 NaN32 NaN64 PROGRAM_FILE QuickSort RoundDown RoundFromZero RoundNearest RoundNearestTiesAway ' + 'RoundNearestTiesUp RoundToZero RoundUp STDERR STDIN STDOUT VERSION catalan e|0 eu|0 eulergamma golden im ' + 'nothing pi γ π φ ',
 
     // # built_in generator:
     // for name in Base.REPLCompletions.completions("", 0)[1]
     //     try
-    //         v = eval(symbol(name))
-    //         if isa(v, DataType) || isa(v, TypeConstructor) || isa(v, TypeVar)
+    //         v = eval(Symbol(name))
+    //         if v isa Type || v isa TypeVar
     //             println(name)
     //         end
     //     end
     // end
-    built_in:
-    // v0.3
-    'ANY ASCIIString AbstractArray AbstractRNG AbstractSparseArray Any ArgumentError Array Associative Base64Pipe ' + 'Bidiagonal BigFloat BigInt BitArray BitMatrix BitVector Bool BoundsError Box CFILE Cchar Cdouble Cfloat Char ' + 'CharString Cint Clong Clonglong ClusterManager Cmd Coff_t Colon Complex Complex128 Complex32 Complex64 ' + 'Condition Cptrdiff_t Cshort Csize_t Cssize_t Cuchar Cuint Culong Culonglong Cushort Cwchar_t DArray DataType ' + 'DenseArray Diagonal Dict DimensionMismatch DirectIndexString Display DivideError DomainError EOFError ' + 'EachLine Enumerate ErrorException Exception Expr Factorization FileMonitor FileOffset Filter Float16 Float32 ' + 'Float64 FloatRange FloatingPoint Function GetfieldNode GotoNode Hermitian IO IOBuffer IOStream IPv4 IPv6 ' + 'InexactError Int Int128 Int16 Int32 Int64 Int8 IntSet Integer InterruptException IntrinsicFunction KeyError ' + 'LabelNode LambdaStaticData LineNumberNode LoadError LocalProcess MIME MathConst MemoryError MersenneTwister ' + 'Method MethodError MethodTable Module NTuple NewvarNode Nothing Number ObjectIdDict OrdinalRange ' + 'OverflowError ParseError PollingFileWatcher ProcessExitedException ProcessGroup Ptr QuoteNode Range Range1 ' + 'Ranges Rational RawFD Real Regex RegexMatch RemoteRef RepString RevString RopeString RoundingMode Set ' + 'SharedArray Signed SparseMatrixCSC StackOverflowError Stat StatStruct StepRange String SubArray SubString ' + 'SymTridiagonal Symbol SymbolNode Symmetric SystemError Task TextDisplay Timer TmStruct TopNode Triangular ' + 'Tridiagonal Type TypeConstructor TypeError TypeName TypeVar UTF16String UTF32String UTF8String UdpSocket ' + 'Uint Uint128 Uint16 Uint32 Uint64 Uint8 UndefRefError UndefVarError UniformScaling UnionType UnitRange ' + 'Unsigned Vararg VersionNumber WString WeakKeyDict WeakRef Woodbury Zip ' +
-    // v0.4 (diff)
-    'AbstractChannel AbstractFloat AbstractString AssertionError Base64DecodePipe Base64EncodePipe BufferStream ' + 'CapturedException CartesianIndex CartesianRange Channel Cintmax_t CompositeException Cstring Cuintmax_t ' + 'Cwstring Date DateTime Dims Enum GenSym GlobalRef HTML InitError InvalidStateException Irrational LinSpace ' + 'LowerTriangular NullException Nullable OutOfMemoryError Pair PartialQuickSort Pipe RandomDevice ' + 'ReadOnlyMemoryError ReentrantLock Ref RemoteException SegmentationFault SerializationState SimpleVector ' + 'TCPSocket Text Tuple UDPSocket UInt UInt128 UInt16 UInt32 UInt64 UInt8 UnicodeError Union UpperTriangular ' + 'Val Void WorkerConfig AbstractMatrix AbstractSparseMatrix AbstractSparseVector AbstractVecOrMat AbstractVector ' + 'DenseMatrix DenseVecOrMat DenseVector Matrix SharedMatrix SharedVector StridedArray StridedMatrix ' + 'StridedVecOrMat StridedVector VecOrMat Vector '
+    built_in: 'ANY AbstractArray AbstractChannel AbstractFloat AbstractMatrix AbstractRNG AbstractSerializer AbstractSet ' + 'AbstractSparseArray AbstractSparseMatrix AbstractSparseVector AbstractString AbstractUnitRange AbstractVecOrMat ' + 'AbstractVector Any ArgumentError Array AssertionError Associative Base64DecodePipe Base64EncodePipe Bidiagonal ' + 'BigFloat BigInt BitArray BitMatrix BitVector Bool BoundsError BufferStream CachingPool CapturedException ' + 'CartesianIndex CartesianRange Cchar Cdouble Cfloat Channel Char Cint Cintmax_t Clong Clonglong ClusterManager ' + 'Cmd CodeInfo Colon Complex Complex128 Complex32 Complex64 CompositeException Condition ConjArray ConjMatrix ' + 'ConjVector Cptrdiff_t Cshort Csize_t Cssize_t Cstring Cuchar Cuint Cuintmax_t Culong Culonglong Cushort Cwchar_t ' + 'Cwstring DataType Date DateFormat DateTime DenseArray DenseMatrix DenseVecOrMat DenseVector Diagonal Dict ' + 'DimensionMismatch Dims DirectIndexString Display DivideError DomainError EOFError EachLine Enum Enumerate ' + 'ErrorException Exception ExponentialBackOff Expr Factorization FileMonitor Float16 Float32 Float64 Function ' + 'Future GlobalRef GotoNode HTML Hermitian IO IOBuffer IOContext IOStream IPAddr IPv4 IPv6 IndexCartesian IndexLinear ' + 'IndexStyle InexactError InitError Int Int128 Int16 Int32 Int64 Int8 IntSet Integer InterruptException ' + 'InvalidStateException Irrational KeyError LabelNode LinSpace LineNumberNode LoadError LowerTriangular MIME Matrix ' + 'MersenneTwister Method MethodError MethodTable Module NTuple NewvarNode NullException Nullable Number ObjectIdDict ' + 'OrdinalRange OutOfMemoryError OverflowError Pair ParseError PartialQuickSort PermutedDimsArray Pipe ' + 'PollingFileWatcher ProcessExitedException Ptr QuoteNode RandomDevice Range RangeIndex Rational RawFD ' + 'ReadOnlyMemoryError Real ReentrantLock Ref Regex RegexMatch RemoteChannel RemoteException RevString RoundingMode ' + 'RowVector SSAValue SegmentationFault SerializationState Set SharedArray SharedMatrix SharedVector Signed ' + 'SimpleVector Slot SlotNumber SparseMatrixCSC SparseVector StackFrame StackOverflowError StackTrace StepRange ' + 'StepRangeLen StridedArray StridedMatrix StridedVecOrMat StridedVector String SubArray SubString SymTridiagonal ' + 'Symbol Symmetric SystemError TCPSocket Task Text TextDisplay Timer Tridiagonal Tuple Type TypeError TypeMapEntry ' + 'TypeMapLevel TypeName TypeVar TypedSlot UDPSocket UInt UInt128 UInt16 UInt32 UInt64 UInt8 UndefRefError UndefVarError ' + 'UnicodeError UniformScaling Union UnionAll UnitRange Unsigned UpperTriangular Val Vararg VecElement VecOrMat Vector ' + 'VersionNumber Void WeakKeyDict WeakRef WorkerConfig WorkerPool '
   };
 
   // ref: http://julia.readthedocs.org/en/latest/manual/variables/#allowed-variable-names
   var VARIABLE_NAME_RE = '[A-Za-z_\\u00A1-\\uFFFF][A-Za-z_0-9\\u00A1-\\uFFFF]*';
 
   // placeholder for recursive self-reference
-  var DEFAULT = { lexemes: VARIABLE_NAME_RE, keywords: KEYWORDS, illegal: /<\// };
-
-  var TYPE_ANNOTATION = {
-    className: 'type',
-    begin: /::/
-  };
-
-  var SUBTYPE = {
-    className: 'type',
-    begin: /<:/
+  var DEFAULT = {
+    lexemes: VARIABLE_NAME_RE, keywords: KEYWORDS, illegal: /<\//
   };
 
   // ref: http://julia.readthedocs.org/en/latest/manual/integers-and-floating-point-numbers/
@@ -10487,14 +10719,18 @@ module.exports = function (hljs) {
     variants: [{ begin: '#=', end: '=#', relevance: 10 }, { begin: '#', end: '$' }]
   };
 
-  DEFAULT.contains = [NUMBER, CHAR, TYPE_ANNOTATION, SUBTYPE, STRING, COMMAND, MACROCALL, COMMENT, hljs.HASH_COMMENT_MODE];
+  DEFAULT.contains = [NUMBER, CHAR, STRING, COMMAND, MACROCALL, COMMENT, hljs.HASH_COMMENT_MODE, {
+    className: 'keyword',
+    begin: '\\b(((abstract|primitive)\\s+)type|(mutable\\s+)?struct)\\b'
+  }, { begin: /<:/ // relevance booster
+  }];
   INTERPOLATION.contains = DEFAULT.contains;
 
   return DEFAULT;
 };
 
 /***/ }),
-/* 114 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10525,13 +10761,16 @@ module.exports = function (hljs) {
   // for string templates
   var SUBST = {
     className: 'subst',
-    variants: [{ begin: '\\$' + hljs.UNDERSCORE_IDENT_RE }, { begin: '\\${', end: '}', contains: [hljs.APOS_STRING_MODE, hljs.C_NUMBER_MODE] }]
+    begin: '\\${', end: '}', contains: [hljs.APOS_STRING_MODE, hljs.C_NUMBER_MODE]
+  };
+  var VARIABLE = {
+    className: 'variable', begin: '\\$' + hljs.UNDERSCORE_IDENT_RE
   };
   var STRING = {
     className: 'string',
     variants: [{
       begin: '"""', end: '"""',
-      contains: [SUBST]
+      contains: [VARIABLE, SUBST]
     },
     // Can't use built-in modes easily, as we want to use STRING in the meta
     // context as 'meta-string' and there's no syntax to remove explicitly set
@@ -10543,7 +10782,7 @@ module.exports = function (hljs) {
     }, {
       begin: '"', end: '"',
       illegal: /\n/,
-      contains: [hljs.BACKSLASH_ESCAPE, SUBST]
+      contains: [hljs.BACKSLASH_ESCAPE, VARIABLE, SUBST]
     }]
   };
 
@@ -10616,7 +10855,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 115 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10729,7 +10968,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10754,7 +10993,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10792,7 +11031,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10897,8 +11136,8 @@ module.exports = function (hljs) {
     contains: [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, MIXIN_GUARD_MODE, IDENT_MODE('keyword', 'all\\b'), IDENT_MODE('variable', '@{' + IDENT_RE + '}'), // otherwise it’s identified as tag
     IDENT_MODE('selector-tag', INTERP_IDENT_RE + '%?', 0), // '%' for more consistent coloring of @keyframes "tags"
     IDENT_MODE('selector-id', '#' + INTERP_IDENT_RE), IDENT_MODE('selector-class', '\\.' + INTERP_IDENT_RE, 0), IDENT_MODE('selector-tag', '&', 0), { className: 'selector-attr', begin: '\\[', end: '\\]' }, { className: 'selector-pseudo', begin: /:(:)?[a-zA-Z0-9\_\-\+\(\)"'.]+/ }, { begin: '\\(', end: '\\)', contains: VALUE_WITH_RULESETS }, // argument list of parametric mixins
-    { begin: '!important' } // eat !important after mixin call or it will be colored as tag
-    ]
+    { begin: '!important' // eat !important after mixin call or it will be colored as tag
+    }]
   };
 
   RULES.push(hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, AT_RULE_MODE, VAR_RULE_MODE, RULE_MODE, SELECTOR_MODE);
@@ -10911,7 +11150,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10989,7 +11228,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11040,7 +11279,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 121 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11076,8 +11315,8 @@ module.exports = function (hljs) {
     className: 'number',
     begin: '(\\b0[xX][a-fA-F0-9_]+)|(\\b\\d(\\d|_\\d)*(\\.(\\d(\\d|_\\d)*)?)?(_*[eE]([-+]\\d(_\\d|\\d)*)?)?[_a-z]*)',
     relevance: 0,
-    starts: { end: '(\\s*/)?', relevance: 0 } // a number tries to eat the following slash to prevent treating it as a regexp
-  }, {
+    starts: { end: '(\\s*/)?', relevance: 0 // a number tries to eat the following slash to prevent treating it as a regexp
+    } }, {
     className: 'string',
     variants: [{
       begin: /'''/, end: /'''/,
@@ -11161,7 +11400,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 122 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11198,7 +11437,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11265,7 +11504,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11293,7 +11532,7 @@ module.exports = function (hljs) {
       //Standard methods and properties:
       'collectgarbage dofile error getfenv getmetatable ipairs load loadfile loadstring' + 'module next pairs pcall print rawequal rawget rawset require select setfenv' + 'setmetatable tonumber tostring type unpack xpcall arg self' +
       //Library methods and properties (one line per library):
-      'coroutine resume yield status wrap create running debug getupvalue' + 'debug sethook getmetatable gethook setmetatable setlocal traceback setfenv getinfo setupvalue getlocal getregistry getfenv' + 'io lines write close flush open output type read stderr stdin input stdout popen tmpfile' + 'math, log, max, acos, huge, ldexp, pi, cos, tanh, pow, deg, tan, cosh, sinh, random, randomseed, frexp, ceil, floor, rad, abs, sqrt, modf, asin, min, mod, fmod, log10, atan2, exp, sin, atan' + 'os, exit, setlocale, date, getenv, difftime, remove, time, clock, tmpname, rename, execute, package, preload, loadlib, loaded, loaders, cpath, config path, seeall' + 'string, sub, upper, len, gfind, rep, find, match, char, dump, gmatch, reverse, byte, format, gsub, lower' + 'table, setn, insert, getn, foreachi, maxn, foreach, concat, sort, remove'
+      'coroutine resume yield status wrap create running debug getupvalue ' + 'debug sethook getmetatable gethook setmetatable setlocal traceback setfenv getinfo setupvalue getlocal getregistry getfenv ' + 'io lines write close flush open output type read stderr stdin input stdout popen tmpfile ' + 'math log max acos huge ldexp pi cos tanh pow deg tan cosh sinh random randomseed frexp ceil floor rad abs sqrt modf asin min mod fmod log10 atan2 exp sin atan ' + 'os exit setlocale date getenv difftime remove time clock tmpname rename execute package preload loadlib loaded loaders cpath config path seeall ' + 'string sub upper len gfind rep find match char dump gmatch reverse byte format gsub lower ' + 'table setn insert getn foreachi maxn foreach concat sort remove'
     },
     contains: COMMENTS.concat([{
       className: 'function',
@@ -11313,48 +11552,71 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 module.exports = function (hljs) {
+  /* Variables: simple (eg $(var)) and special (eg $@) */
   var VARIABLE = {
     className: 'variable',
-    begin: /\$\(/, end: /\)/,
-    contains: [hljs.BACKSLASH_ESCAPE]
+    variants: [{
+      begin: '\\$\\(' + hljs.UNDERSCORE_IDENT_RE + '\\)',
+      contains: [hljs.BACKSLASH_ESCAPE]
+    }, {
+      begin: /\$[@%<?\^\+\*]/
+    }]
+  };
+  /* Quoted string with variables inside */
+  var QUOTE_STRING = {
+    className: 'string',
+    begin: /"/, end: /"/,
+    contains: [hljs.BACKSLASH_ESCAPE, VARIABLE]
+  };
+  /* Function: $(func arg,...) */
+  var FUNC = {
+    className: 'variable',
+    begin: /\$\([\w-]+\s/, end: /\)/,
+    keywords: {
+      built_in: 'subst patsubst strip findstring filter filter-out sort ' + 'word wordlist firstword lastword dir notdir suffix basename ' + 'addsuffix addprefix join wildcard realpath abspath error warning ' + 'shell origin flavor foreach if or and call eval file value'
+    },
+    contains: [VARIABLE]
+  };
+  /* Variable assignment */
+  var VAR_ASSIG = {
+    begin: '^' + hljs.UNDERSCORE_IDENT_RE + '\\s*[:+?]?=',
+    illegal: '\\n',
+    returnBegin: true,
+    contains: [{
+      begin: '^' + hljs.UNDERSCORE_IDENT_RE, end: '[:+?]?=',
+      excludeEnd: true
+    }]
+  };
+  /* Meta targets (.PHONY) */
+  var META = {
+    className: 'meta',
+    begin: /^\.PHONY:/, end: /$/,
+    keywords: { 'meta-keyword': '.PHONY' },
+    lexemes: /[\.\w]+/
+  };
+  /* Targets */
+  var TARGET = {
+    className: 'section',
+    begin: /^[^\s]+:/, end: /$/,
+    contains: [VARIABLE]
   };
   return {
     aliases: ['mk', 'mak'],
-    contains: [hljs.HASH_COMMENT_MODE, {
-      begin: /^\w+\s*\W*=/, returnBegin: true,
-      relevance: 0,
-      starts: {
-        end: /\s*\W*=/, excludeEnd: true,
-        starts: {
-          end: /$/,
-          relevance: 0,
-          contains: [VARIABLE]
-        }
-      }
-    }, {
-      className: 'section',
-      begin: /^[\w]+:\s*$/
-    }, {
-      className: 'meta',
-      begin: /^\.PHONY:/, end: /$/,
-      keywords: { 'meta-keyword': '.PHONY' }, lexemes: /[\.\w]+/
-    }, {
-      begin: /^\t+/, end: /$/,
-      relevance: 0,
-      contains: [hljs.QUOTE_STRING_MODE, VARIABLE]
-    }]
+    keywords: 'define endef undefine ifdef ifndef ifeq ifneq else endif ' + 'include -include sinclude override export unexport private vpath',
+    lexemes: /[\w-]+/,
+    contains: [hljs.HASH_COMMENT_MODE, VARIABLE, QUOTE_STRING, FUNC, VAR_ASSIG, META, TARGET]
   };
 };
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11450,7 +11712,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11472,7 +11734,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11529,7 +11791,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11580,7 +11842,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11601,7 +11863,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11647,13 +11909,13 @@ module.exports = function (hljs) {
   return {
     aliases: ['m', 'moo'],
     keywords: KEYWORDS,
-    contains: [IMPLICATION, HEAD_BODY_CONJUNCTION, COMMENT, hljs.C_BLOCK_COMMENT_MODE, NUMCODE, hljs.NUMBER_MODE, ATOM, STRING, { begin: /:-/ } // relevance booster
-    ]
+    contains: [IMPLICATION, HEAD_BODY_CONJUNCTION, COMMENT, hljs.C_BLOCK_COMMENT_MODE, NUMCODE, hljs.NUMBER_MODE, ATOM, STRING, { begin: /:-/ // relevance booster
+    }]
   };
 };
 
 /***/ }),
-/* 132 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11704,15 +11966,15 @@ module.exports = function (hljs) {
     }, {
       className: 'number',
       variants: [{ begin: '0x[0-9a-f]+' }, //hex
-      { begin: '\\b-?\\d+' } //bare number
-      ],
+      { begin: '\\b-?\\d+' //bare number
+      }],
       relevance: 0
     }, {
       className: 'symbol',
       variants: [{ begin: '^\\s*[a-z_\\.\\$][a-z0-9_\\.\\$]+:' }, //GNU MIPS syntax
       { begin: '^\\s*[0-9]+:' }, // numbered local labels
-      { begin: '[0-9]+[bf]' } // number local label reference (backwards, forwards)
-      ],
+      { begin: '[0-9]+[bf]' // number local label reference (backwards, forwards)
+      }],
       relevance: 0
     }],
     illegal: '\/'
@@ -11720,7 +11982,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11734,7 +11996,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11764,7 +12026,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11819,7 +12081,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11912,7 +12174,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11953,7 +12215,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12029,7 +12291,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12070,7 +12332,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12111,7 +12373,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12195,7 +12457,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12249,7 +12511,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 143 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12302,7 +12564,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12357,7 +12619,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12405,7 +12667,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12441,7 +12703,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12550,7 +12812,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 148 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12586,7 +12848,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 149 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12662,7 +12924,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 150 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12729,7 +12991,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 151 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12792,7 +13054,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 152 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12813,7 +13075,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 153 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12842,7 +13104,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 154 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12912,13 +13174,13 @@ module.exports = function (hljs) {
   LIST.contains = inner;
 
   return {
-    contains: inner.concat([{ begin: /\.$/ } // relevance booster
-    ])
+    contains: inner.concat([{ begin: /\.$/ // relevance booster
+    }])
   };
 };
 
 /***/ }),
-/* 155 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12936,8 +13198,8 @@ module.exports = function (hljs) {
       beginKeywords: 'message enum service', end: /\{/,
       illegal: /\n/,
       contains: [hljs.inherit(hljs.TITLE_MODE, {
-        starts: { endsWithParent: true, excludeEnd: true } // hack: eating everything after the first title
-      })]
+        starts: { endsWithParent: true, excludeEnd: true // hack: eating everything after the first title
+        } })]
     }, {
       className: 'function',
       beginKeywords: 'rpc',
@@ -12951,7 +13213,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 156 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13027,7 +13289,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 157 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13075,7 +13337,7 @@ function (hljs) {
 };
 
 /***/ }),
-/* 158 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13162,7 +13424,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 159 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13184,7 +13446,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 160 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13194,7 +13456,7 @@ module.exports = function (hljs) {
   var KEYWORDS = {
     keyword: 'in of on if for while finally var new function do return void else break catch ' + 'instanceof with throw case default try this switch continue typeof delete ' + 'let yield const export super debugger as async await import',
     literal: 'true false null undefined NaN Infinity',
-    built_in: 'eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent ' + 'encodeURI encodeURIComponent escape unescape Object Function Boolean Error ' + 'EvalError InternalError RangeError ReferenceError StopIteration SyntaxError ' + 'TypeError URIError Number Math Date String RegExp Array Float32Array ' + 'Float64Array Int16Array Int32Array Int8Array Uint16Array Uint32Array ' + 'Uint8Array Uint8ClampedArray ArrayBuffer DataView JSON Intl arguments require ' + 'module console window document Symbol Set Map WeakSet WeakMap Proxy Reflect ' + 'Behavior bool color coordinate date double enumeration font geocircle georectangle ' + 'geoshape int list matrix4x4 parent point quaternion real rect ' + 'size string url var variant vector2d vector3d vector4d' + 'Promise'
+    built_in: 'eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent ' + 'encodeURI encodeURIComponent escape unescape Object Function Boolean Error ' + 'EvalError InternalError RangeError ReferenceError StopIteration SyntaxError ' + 'TypeError URIError Number Math Date String RegExp Array Float32Array ' + 'Float64Array Int16Array Int32Array Int8Array Uint16Array Uint32Array ' + 'Uint8Array Uint8ClampedArray ArrayBuffer DataView JSON Intl arguments require ' + 'module console window document Symbol Set Map WeakSet WeakMap Proxy Reflect ' + 'Behavior bool color coordinate date double enumeration font geocircle georectangle ' + 'geoshape int list matrix4x4 parent point quaternion real rect ' + 'size string url variant vector2d vector3d vector4d' + 'Promise'
   };
 
   var QML_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9\\._]*';
@@ -13307,7 +13569,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 161 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13364,7 +13626,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 162 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13379,7 +13641,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 163 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13439,7 +13701,142 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 164 */
+/* 166 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = // Colors from RouterOS terminal:
+//   green        - #0E9A00
+//   teal         - #0C9A9A
+//   purple       - #99069A
+//   light-brown  - #9A9900
+
+function (hljs) {
+
+  var STATEMENTS = 'foreach do while for if from to step else on-error and or not in';
+
+  // Global commands: Every global command should start with ":" token, otherwise it will be treated as variable.
+  var GLOBAL_COMMANDS = 'global local beep delay put len typeof pick log time set find environment terminal error execute parse resolve toarray tobool toid toip toip6 tonum tostr totime';
+
+  // Common commands: Following commands available from most sub-menus:
+  var COMMON_COMMANDS = 'add remove enable disable set get print export edit find run debug error info warning';
+
+  var LITERALS = 'true false yes no nothing nil null';
+
+  var OBJECTS = 'traffic-flow traffic-generator firewall scheduler aaa accounting address-list address align area bandwidth-server bfd bgp bridge client clock community config connection console customer default dhcp-client dhcp-server discovery dns e-mail ethernet filter firewall firmware gps graphing group hardware health hotspot identity igmp-proxy incoming instance interface ip ipsec ipv6 irq l2tp-server lcd ldp logging mac-server mac-winbox mangle manual mirror mme mpls nat nd neighbor network note ntp ospf ospf-v3 ovpn-server page peer pim ping policy pool port ppp pppoe-client pptp-server prefix profile proposal proxy queue radius resource rip ripng route routing screen script security-profiles server service service-port settings shares smb sms sniffer snmp snooper socks sstp-server system tool tracking type upgrade upnp user-manager users user vlan secret vrrp watchdog web-access wireless pptp pppoe lan wan layer7-protocol lease simple raw';
+
+  // print parameters
+  // Several parameters are available for print command:
+  // ToDo: var PARAMETERS_PRINT = 'append as-value brief detail count-only file follow follow-only from interval terse value-list without-paging where info';
+  // ToDo: var OPERATORS = '&& and ! not || or in ~ ^ & << >> + - * /';
+  // ToDo: var TYPES = 'num number bool boolean str string ip ip6-prefix id time array';
+  // ToDo: The following tokens serve as delimiters in the grammar: ()  []  {}  :   ;   $   / 
+
+  var VAR_PREFIX = 'global local set for foreach';
+
+  var VAR = {
+    className: 'variable',
+    variants: [{ begin: /\$[\w\d#@][\w\d_]*/ }, { begin: /\$\{(.*?)}/ }]
+  };
+
+  var QUOTE_STRING = {
+    className: 'string',
+    begin: /"/, end: /"/,
+    contains: [hljs.BACKSLASH_ESCAPE, VAR, {
+      className: 'variable',
+      begin: /\$\(/, end: /\)/,
+      contains: [hljs.BACKSLASH_ESCAPE]
+    }]
+  };
+
+  var APOS_STRING = {
+    className: 'string',
+    begin: /'/, end: /'/
+  };
+
+  var IPADDR = '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\b';
+  var IPADDR_wBITMASK = IPADDR + '/(3[0-2]|[1-2][0-9]|\\d)';
+  //////////////////////////////////////////////////////////////////////
+  return {
+    aliases: ['routeros', 'mikrotik'],
+    case_insensitive: true,
+    lexemes: /:?[\w-]+/,
+    keywords: {
+      literal: LITERALS,
+      keyword: STATEMENTS + ' :' + STATEMENTS.split(' ').join(' :') + ' :' + GLOBAL_COMMANDS.split(' ').join(' :')
+    },
+    contains: [{ // недопустимые конструкции
+      variants: [{ begin: /^@/, end: /$/ }, // dns
+      { begin: /\/\*/, end: /\*\// }, // -- comment
+      { begin: /%%/, end: /$/ }, // -- comment
+      { begin: /^'/, end: /$/ }, // Monkey one line comment
+      { begin: /^\s*\/[\w-]+=/, end: /$/ }, // jboss-cli
+      { begin: /\/\//, end: /$/ }, // Stan comment
+      { begin: /^\[\</, end: /\>\]$/ }, // F# class declaration?
+      { begin: /<\//, end: />/ }, // HTML tags
+      { begin: /^facet /, end: /\}/ }, // roboconf - лютый костыль )))
+      { begin: '^1\\.\\.(\\d+)$', end: /$/ }],
+      illegal: /./
+    }, hljs.COMMENT('^#', '$'), QUOTE_STRING, APOS_STRING, VAR, { // attribute=value
+      begin: /[\w-]+\=([^\s\{\}\[\]\(\)]+)/,
+      relevance: 0,
+      returnBegin: true,
+      contains: [{
+        className: 'attribute',
+        begin: /[^=]+/
+      }, {
+        begin: /=/,
+        endsWithParent: true,
+        relevance: 0,
+        contains: [QUOTE_STRING, APOS_STRING, VAR, {
+          className: 'literal',
+          begin: '\\b(' + LITERALS.split(' ').join('|') + ')\\b'
+        },
+        /*{
+          // IPv4 addresses and subnets
+          className: 'number',
+          variants: [
+            {begin: IPADDR_wBITMASK+'(,'+IPADDR_wBITMASK+')*'}, //192.168.0.0/24,1.2.3.0/24
+            {begin: IPADDR+'-'+IPADDR},       // 192.168.0.1-192.168.0.3
+            {begin: IPADDR+'(,'+IPADDR+')*'}, // 192.168.0.1,192.168.0.34,192.168.24.1,192.168.0.1
+          ]
+        }, // */
+        /*{
+          // MAC addresses and DHCP Client IDs
+          className: 'number',
+          begin: /\b(1:)?([0-9A-Fa-f]{1,2}[:-]){5}([0-9A-Fa-f]){1,2}\b/,
+        }, //*/
+        {
+          // Не форматировать не классифицированные значения. Необходимо для исключения подсветки значений как built_in.
+          // className: 'number',  
+          begin: /("[^"]*"|[^\s\{\}\[\]]+)/
+        }] //*/
+      }]
+    }, //*/
+    {
+      // HEX values
+      className: 'number',
+      begin: /\*[0-9a-fA-F]+/
+    }, //*/
+
+    {
+      begin: '\\b(' + COMMON_COMMANDS.split(' ').join('|') + ')([\\s\[\(]|\])',
+      returnBegin: true,
+      contains: [{
+        className: 'builtin-name', //'function',
+        begin: /\w+/
+      }]
+    }, {
+      className: 'built_in',
+      variants: [{ begin: '(\\.\\./|/|\\s)((' + OBJECTS.split(' ').join('|') + ');?\\s)+', relevance: 10 }, { begin: /\.\./ }]
+    }]
+  };
+};
+
+/***/ }),
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13465,7 +13862,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 165 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13550,6 +13947,7 @@ module.exports = function (hljs) {
     keywords: RUBY_KEYWORDS
   }, { // regexp container
     begin: '(' + hljs.RE_STARTERS_RE + '|unless)\\s*',
+    keywords: 'unless',
     contains: [IRB_OBJECT, {
       className: 'regexp',
       contains: [hljs.BACKSLASH_ESCAPE, SUBST],
@@ -13588,7 +13986,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 166 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13609,7 +14007,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 167 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13638,7 +14036,7 @@ module.exports = function (hljs) {
     illegal: '</',
     contains: [hljs.C_LINE_COMMENT_MODE, hljs.COMMENT('/\\*', '\\*/', { contains: ['self'] }), hljs.inherit(hljs.QUOTE_STRING_MODE, { begin: /b?"/, illegal: null }), {
       className: 'string',
-      variants: [{ begin: /r(#*)".*?"\1(?!#)/ }, { begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ }]
+      variants: [{ begin: /r(#*)"(.|\n)*?"\1(?!#)/ }, { begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ }]
     }, {
       className: 'symbol',
       begin: /'[a-zA-Z_][a-zA-Z0-9_]*/
@@ -13678,7 +14076,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 168 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13777,7 +14175,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 169 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13871,7 +14269,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 170 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13914,7 +14312,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 171 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13984,7 +14382,27 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 172 */
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (hljs) {
+  return {
+    aliases: ['console'],
+    contains: [{
+      className: 'meta',
+      begin: '^\\s{0,3}[\\w\\d\\[\\]()@-]*[>%$#]',
+      starts: {
+        end: '$', subLanguage: 'bash'
+      }
+    }]
+  };
+};
+
+/***/ }),
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14027,7 +14445,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 173 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14069,7 +14487,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 174 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14119,7 +14537,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 175 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14170,7 +14588,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 176 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14208,7 +14626,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 177 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14270,7 +14688,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 178 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14300,7 +14718,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 179 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14341,7 +14759,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 180 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14469,7 +14887,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 181 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14500,7 +14918,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 182 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14508,7 +14926,7 @@ module.exports = function (hljs) {
 
 module.exports = function (hljs) {
   var SWIFT_KEYWORDS = {
-    keyword: '__COLUMN__ __FILE__ __FUNCTION__ __LINE__ as as! as? associativity ' + 'break case catch class continue convenience default defer deinit didSet do ' + 'dynamic dynamicType else enum extension fallthrough false final for func ' + 'get guard if import in indirect infix init inout internal is lazy left let ' + 'mutating nil none nonmutating operator optional override postfix precedence ' + 'prefix private protocol Protocol public repeat required rethrows return ' + 'right self Self set static struct subscript super switch throw throws true ' + 'try try! try? Type typealias unowned var weak where while willSet',
+    keyword: '__COLUMN__ __FILE__ __FUNCTION__ __LINE__ as as! as? associativity ' + 'break case catch class continue convenience default defer deinit didSet do ' + 'dynamic dynamicType else enum extension fallthrough false fileprivate final for func ' + 'get guard if import in indirect infix init inout internal is lazy left let ' + 'mutating nil none nonmutating open operator optional override postfix precedence ' + 'prefix private protocol Protocol public repeat required rethrows return ' + 'right self Self set static struct subscript super switch throw throws true ' + 'try try! try? Type typealias unowned var weak where while willSet',
     literal: 'true false nil',
     built_in: 'abs advance alignof alignofValue anyGenerator assert assertionFailure ' + 'bridgeFromObjectiveC bridgeFromObjectiveCUnconditional bridgeToObjectiveC ' + 'bridgeToObjectiveCUnconditional c contains count countElements countLeadingZeros ' + 'debugPrint debugPrintln distance dropFirst dropLast dump encodeBitsAsWords ' + 'enumerate equal fatalError filter find getBridgedObjectiveCType getVaList ' + 'indices insertionSort isBridgedToObjectiveC isBridgedVerbatimToObjectiveC ' + 'isUniquelyReferenced isUniquelyReferencedNonObjC join lazy lexicographicalCompare ' + 'map max maxElement min minElement numericCast overlaps partition posix ' + 'precondition preconditionFailure print println quickSort readLine reduce reflect ' + 'reinterpretCast reverse roundUpToAlignment sizeof sizeofValue sort split ' + 'startsWith stride strideof strideofValue swap toString transcode ' + 'underestimateCount unsafeAddressOf unsafeBitCast unsafeDowncast unsafeUnwrap ' + 'unsafeReflect withExtendedLifetime withObjectAtPlusZero withUnsafePointer ' + 'withUnsafePointerToObject withUnsafeMutablePointer withUnsafeMutablePointers ' + 'withUnsafePointer withUnsafePointers withVaList zip'
   };
@@ -14550,8 +14968,8 @@ module.exports = function (hljs) {
         className: 'params',
         begin: /\(/, end: /\)/, endsParent: true,
         keywords: SWIFT_KEYWORDS,
-        contains: ['self', NUMBERS, QUOTE_STRING_MODE, hljs.C_BLOCK_COMMENT_MODE, { begin: ':' } // relevance booster
-        ],
+        contains: ['self', NUMBERS, QUOTE_STRING_MODE, hljs.C_BLOCK_COMMENT_MODE, { begin: ':' // relevance booster
+        }],
         illegal: /["']/
       }],
       illegal: /\[|%/
@@ -14574,7 +14992,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 183 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14620,7 +15038,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 184 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14655,7 +15073,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 185 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14697,7 +15115,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 186 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14742,7 +15160,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 187 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14761,8 +15179,8 @@ module.exports = function (hljs) {
       beginKeywords: 'struct enum service exception', end: /\{/,
       illegal: /\n/,
       contains: [hljs.inherit(hljs.TITLE_MODE, {
-        starts: { endsWithParent: true, excludeEnd: true } // hack: eating everything after the first title
-      })]
+        starts: { endsWithParent: true, excludeEnd: true // hack: eating everything after the first title
+        } })]
     }, {
       begin: '\\b(set|list|map)\\s*<', end: '>',
       keywords: BUILT_IN_TYPES,
@@ -14772,7 +15190,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 188 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14834,7 +15252,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 189 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14893,7 +15311,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 190 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14991,7 +15409,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 191 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15034,7 +15452,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 192 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15082,7 +15500,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 193 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15099,7 +15517,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 194 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15122,7 +15540,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 195 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15157,7 +15575,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 196 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15203,7 +15621,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 197 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15255,7 +15673,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 198 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15358,7 +15776,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 199 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15411,7 +15829,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 200 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15493,7 +15911,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 201 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15552,7 +15970,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 202 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15571,8 +15989,8 @@ module.exports = function (hljs) {
   var TEMPLATE_VARIABLES = {
     className: 'template-variable',
     variants: [{ begin: '\{\{', end: '\}\}' }, // jinja templates Ansible
-    { begin: '%\{', end: '\}' } // Ruby i18n
-    ]
+    { begin: '%\{', end: '\}' // Ruby i18n
+    }]
   };
   var STRING = {
     className: 'string',
@@ -15622,7 +16040,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 203 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15687,7 +16105,7 @@ module.exports = function (hljs) {
 };
 
 /***/ }),
-/* 204 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15779,7 +16197,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 };
 
 /***/ }),
-/* 205 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15792,7 +16210,7 @@ module.exports = Array.isArray || function (arr) {
 };
 
 /***/ }),
-/* 206 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15951,7 +16369,7 @@ function createNormalizer() {
 function compile(self) {
 
   // Load & clone RE patterns.
-  var re = self.re = __webpack_require__(207)(self.__opts__);
+  var re = self.re = __webpack_require__(211)(self.__opts__);
 
   // Define dynamic patterns
   var tlds = self.__tlds__.slice();
@@ -16423,7 +16841,7 @@ LinkifyIt.prototype.onCompile = function onCompile() {};
 module.exports = LinkifyIt;
 
 /***/ }),
-/* 207 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16536,7 +16954,7 @@ module.exports = function (opts) {
 };
 
 /***/ }),
-/* 208 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16682,16 +17100,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 209 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(215);
+module.exports = __webpack_require__(219);
 
 /***/ }),
-/* 210 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16700,22 +17118,22 @@ module.exports = __webpack_require__(215);
 
 
 
-module.exports = ['address', 'article', 'aside', 'base', 'basefont', 'blockquote', 'body', 'caption', 'center', 'col', 'colgroup', 'dd', 'details', 'dialog', 'dir', 'div', 'dl', 'dt', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'frame', 'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hr', 'html', 'iframe', 'legend', 'li', 'link', 'main', 'menu', 'menuitem', 'meta', 'nav', 'noframes', 'ol', 'optgroup', 'option', 'p', 'param', 'pre', 'section', 'source', 'title', 'summary', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'title', 'tr', 'track', 'ul'];
+module.exports = ['address', 'article', 'aside', 'base', 'basefont', 'blockquote', 'body', 'caption', 'center', 'col', 'colgroup', 'dd', 'details', 'dialog', 'dir', 'div', 'dl', 'dt', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'frame', 'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hr', 'html', 'iframe', 'legend', 'li', 'link', 'main', 'menu', 'menuitem', 'meta', 'nav', 'noframes', 'ol', 'optgroup', 'option', 'p', 'param', 'section', 'source', 'summary', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'title', 'tr', 'track', 'ul'];
 
 /***/ }),
-/* 211 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 // Just a shortcut for bulk export
 
 
-exports.parseLinkLabel = __webpack_require__(213);
-exports.parseLinkDestination = __webpack_require__(212);
-exports.parseLinkTitle = __webpack_require__(214);
+exports.parseLinkLabel = __webpack_require__(217);
+exports.parseLinkDestination = __webpack_require__(216);
+exports.parseLinkTitle = __webpack_require__(218);
 
 /***/ }),
-/* 212 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16785,22 +17203,22 @@ module.exports = function parseLinkDestination(str, pos, max) {
 
     if (code === 0x28 /* ( */) {
         level++;
-        if (level > 1) {
-          break;
-        }
       }
 
     if (code === 0x29 /* ) */) {
-        level--;
-        if (level < 0) {
+        if (level === 0) {
           break;
         }
+        level--;
       }
 
     pos++;
   }
 
   if (start === pos) {
+    return result;
+  }
+  if (level !== 0) {
     return result;
   }
 
@@ -16812,7 +17230,7 @@ module.exports = function parseLinkDestination(str, pos, max) {
 };
 
 /***/ }),
-/* 213 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16869,7 +17287,7 @@ module.exports = function parseLinkLabel(state, start, disableNested) {
 };
 
 /***/ }),
-/* 214 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16932,7 +17350,7 @@ module.exports = function parseLinkTitle(str, pos, max) {
 };
 
 /***/ }),
-/* 215 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16941,19 +17359,19 @@ module.exports = function parseLinkTitle(str, pos, max) {
 
 
 var utils = __webpack_require__(0);
-var helpers = __webpack_require__(211);
-var Renderer = __webpack_require__(222);
-var ParserCore = __webpack_require__(217);
-var ParserBlock = __webpack_require__(216);
-var ParserInline = __webpack_require__(218);
-var LinkifyIt = __webpack_require__(206);
-var mdurl = __webpack_require__(17);
-var punycode = __webpack_require__(262);
+var helpers = __webpack_require__(215);
+var Renderer = __webpack_require__(226);
+var ParserCore = __webpack_require__(221);
+var ParserBlock = __webpack_require__(220);
+var ParserInline = __webpack_require__(222);
+var LinkifyIt = __webpack_require__(210);
+var mdurl = __webpack_require__(18);
+var punycode = __webpack_require__(266);
 
 var config = {
-  'default': __webpack_require__(220),
-  zero: __webpack_require__(221),
-  commonmark: __webpack_require__(219)
+  'default': __webpack_require__(224),
+  zero: __webpack_require__(225),
+  commonmark: __webpack_require__(223)
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17521,7 +17939,7 @@ MarkdownIt.prototype.renderInline = function (src, env) {
 module.exports = MarkdownIt;
 
 /***/ }),
-/* 216 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17532,12 +17950,12 @@ module.exports = MarkdownIt;
  **/
 
 
-var Ruler = __webpack_require__(5);
+var Ruler = __webpack_require__(7);
 
 var _rules = [
 // First 2 params - rule name & source. Secondary array - list of rules,
 // which can be terminated by this one.
-['table', __webpack_require__(234), ['paragraph', 'reference']], ['code', __webpack_require__(224)], ['fence', __webpack_require__(225), ['paragraph', 'reference', 'blockquote', 'list']], ['blockquote', __webpack_require__(223), ['paragraph', 'reference', 'list']], ['hr', __webpack_require__(227), ['paragraph', 'reference', 'blockquote', 'list']], ['list', __webpack_require__(230), ['paragraph', 'reference', 'blockquote']], ['reference', __webpack_require__(232)], ['heading', __webpack_require__(226), ['paragraph', 'reference', 'blockquote']], ['lheading', __webpack_require__(229)], ['html_block', __webpack_require__(228), ['paragraph', 'reference', 'blockquote']], ['paragraph', __webpack_require__(231)]];
+['table', __webpack_require__(238), ['paragraph', 'reference']], ['code', __webpack_require__(228)], ['fence', __webpack_require__(229), ['paragraph', 'reference', 'blockquote', 'list']], ['blockquote', __webpack_require__(227), ['paragraph', 'reference', 'blockquote', 'list']], ['hr', __webpack_require__(231), ['paragraph', 'reference', 'blockquote', 'list']], ['list', __webpack_require__(234), ['paragraph', 'reference', 'blockquote']], ['reference', __webpack_require__(236)], ['heading', __webpack_require__(230), ['paragraph', 'reference', 'blockquote']], ['lheading', __webpack_require__(233)], ['html_block', __webpack_require__(232), ['paragraph', 'reference', 'blockquote']], ['paragraph', __webpack_require__(235)]];
 
 /**
  * new ParserBlock()
@@ -17599,7 +18017,7 @@ ParserBlock.prototype.tokenize = function (state, startLine, endLine) {
       }
     }
 
-    // set state.tight iff we had an empty line before current tag
+    // set state.tight if we had an empty line before current tag
     // i.e. latest empty line should not count
     state.tight = !hasEmptyLines;
 
@@ -17635,12 +18053,12 @@ ParserBlock.prototype.parse = function (src, md, env, outTokens) {
   this.tokenize(state, state.line, state.lineMax);
 };
 
-ParserBlock.prototype.State = __webpack_require__(233);
+ParserBlock.prototype.State = __webpack_require__(237);
 
 module.exports = ParserBlock;
 
 /***/ }),
-/* 217 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17652,9 +18070,9 @@ module.exports = ParserBlock;
  **/
 
 
-var Ruler = __webpack_require__(5);
+var Ruler = __webpack_require__(7);
 
-var _rules = [['normalize', __webpack_require__(238)], ['block', __webpack_require__(235)], ['inline', __webpack_require__(236)], ['linkify', __webpack_require__(237)], ['replacements', __webpack_require__(239)], ['smartquotes', __webpack_require__(240)]];
+var _rules = [['normalize', __webpack_require__(242)], ['block', __webpack_require__(239)], ['inline', __webpack_require__(240)], ['linkify', __webpack_require__(241)], ['replacements', __webpack_require__(243)], ['smartquotes', __webpack_require__(244)]];
 
 /**
  * new Core()
@@ -17687,12 +18105,12 @@ Core.prototype.process = function (state) {
   }
 };
 
-Core.prototype.State = __webpack_require__(241);
+Core.prototype.State = __webpack_require__(245);
 
 module.exports = Core;
 
 /***/ }),
-/* 218 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17703,14 +18121,14 @@ module.exports = Core;
  **/
 
 
-var Ruler = __webpack_require__(5);
+var Ruler = __webpack_require__(7);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Parser rules
 
-var _rules = [['text', __webpack_require__(252)], ['newline', __webpack_require__(250)], ['escape', __webpack_require__(246)], ['backticks', __webpack_require__(243)], ['strikethrough', __webpack_require__(16).tokenize], ['emphasis', __webpack_require__(15).tokenize], ['link', __webpack_require__(249)], ['image', __webpack_require__(248)], ['autolink', __webpack_require__(242)], ['html_inline', __webpack_require__(247)], ['entity', __webpack_require__(245)]];
+var _rules = [['text', __webpack_require__(256)], ['newline', __webpack_require__(254)], ['escape', __webpack_require__(250)], ['backticks', __webpack_require__(247)], ['strikethrough', __webpack_require__(17).tokenize], ['emphasis', __webpack_require__(16).tokenize], ['link', __webpack_require__(253)], ['image', __webpack_require__(252)], ['autolink', __webpack_require__(246)], ['html_inline', __webpack_require__(251)], ['entity', __webpack_require__(249)]];
 
-var _rules2 = [['balance_pairs', __webpack_require__(244)], ['strikethrough', __webpack_require__(16).postProcess], ['emphasis', __webpack_require__(15).postProcess], ['text_collapse', __webpack_require__(253)]];
+var _rules2 = [['balance_pairs', __webpack_require__(248)], ['strikethrough', __webpack_require__(17).postProcess], ['emphasis', __webpack_require__(16).postProcess], ['text_collapse', __webpack_require__(257)]];
 
 /**
  * new ParserInline()
@@ -17855,12 +18273,12 @@ ParserInline.prototype.parse = function (str, md, env, outTokens) {
   }
 };
 
-ParserInline.prototype.State = __webpack_require__(251);
+ParserInline.prototype.State = __webpack_require__(255);
 
 module.exports = ParserInline;
 
 /***/ }),
-/* 219 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17915,7 +18333,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 220 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17961,7 +18379,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 221 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18017,7 +18435,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 222 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18073,7 +18491,7 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
     return highlighted + '\n';
   }
 
-  // If language exists, inject class gently, without mudofying original token.
+  // If language exists, inject class gently, without modifying original token.
   // May be, one day we will add .clone() for token and simplify this part, but
   // now we prefer to keep things local.
   if (info) {
@@ -18339,7 +18757,7 @@ Renderer.prototype.render = function (tokens, options, env) {
 module.exports = Renderer;
 
 /***/ }),
-/* 223 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18354,7 +18772,6 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       ch,
       i,
       initial,
-      isOutdented,
       l,
       lastLineEmpty,
       lines,
@@ -18370,6 +18787,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       terminate,
       terminatorRules,
       token,
+      wasOutdented,
       oldLineMax = state.lineMax,
       pos = state.bMarks[startLine] + state.tShift[startLine],
       max = state.eMarks[startLine];
@@ -18456,6 +18874,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
 
   oldParentType = state.parentType;
   state.parentType = 'blockquote';
+  wasOutdented = false;
 
   // Search the end of the block
   //
@@ -18484,7 +18903,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
     //    > current blockquote
     // 2. checking this line
     // ```
-    isOutdented = state.sCount[nextLine] < state.blkIndent;
+    if (state.sCount[nextLine] < state.blkIndent) wasOutdented = true;
 
     pos = state.bMarks[nextLine] + state.tShift[nextLine];
     max = state.eMarks[nextLine];
@@ -18494,7 +18913,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       break;
     }
 
-    if (state.src.charCodeAt(pos++) === 0x3E /* > */ && !isOutdented) {
+    if (state.src.charCodeAt(pos++) === 0x3E /* > */ && !wasOutdented) {
       // This line is inside the blockquote.
 
       // skip spaces after ">" and re-calculate offset
@@ -18596,8 +19015,6 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       break;
     }
 
-    if (isOutdented) break;
-
     oldBMarks.push(state.bMarks[nextLine]);
     oldBSCount.push(state.bsCount[nextLine]);
     oldTShift.push(state.tShift[nextLine]);
@@ -18638,7 +19055,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
 };
 
 /***/ }),
-/* 224 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18679,7 +19096,7 @@ module.exports = function code(state, startLine, endLine /*, silent*/) {
 };
 
 /***/ }),
-/* 225 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18800,7 +19217,7 @@ module.exports = function fence(state, startLine, endLine, silent) {
 };
 
 /***/ }),
-/* 226 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18871,7 +19288,7 @@ module.exports = function heading(state, startLine, endLine, silent) {
 };
 
 /***/ }),
-/* 227 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18932,7 +19349,7 @@ module.exports = function hr(state, startLine, endLine, silent) {
 };
 
 /***/ }),
-/* 228 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18940,8 +19357,8 @@ module.exports = function hr(state, startLine, endLine, silent) {
 
 
 
-var block_names = __webpack_require__(210);
-var HTML_OPEN_CLOSE_TAG_RE = __webpack_require__(14).HTML_OPEN_CLOSE_TAG_RE;
+var block_names = __webpack_require__(214);
+var HTML_OPEN_CLOSE_TAG_RE = __webpack_require__(15).HTML_OPEN_CLOSE_TAG_RE;
 
 // An array of opening and corresponding closing sequences for html tags,
 // last argument defines whether it can terminate a paragraph or not
@@ -19019,7 +19436,7 @@ module.exports = function html_block(state, startLine, endLine, silent) {
 };
 
 /***/ }),
-/* 229 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19124,7 +19541,7 @@ module.exports = function lheading(state, startLine, endLine /*, silent*/) {
 };
 
 /***/ }),
-/* 230 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19134,7 +19551,7 @@ module.exports = function lheading(state, startLine, endLine /*, silent*/) {
 
 var isSpace = __webpack_require__(0).isSpace;
 
-// Search `[-+*][\n ]`, returns next pos arter marker on success
+// Search `[-+*][\n ]`, returns next pos after marker on success
 // or -1 on fail.
 function skipBulletListMarker(state, startLine) {
   var marker, pos, max, ch;
@@ -19160,7 +19577,7 @@ function skipBulletListMarker(state, startLine) {
   return pos;
 }
 
-// Search `\d+[.)][\n ]`, returns next pos arter marker on success
+// Search `\d+[.)][\n ]`, returns next pos after marker on success
 // or -1 on fail.
 function skipOrderedListMarker(state, startLine) {
   var ch,
@@ -19345,12 +19762,10 @@ module.exports = function list(state, startLine, endLine, silent) {
     while (pos < max) {
       ch = state.src.charCodeAt(pos);
 
-      if (isSpace(ch)) {
-        if (ch === 0x09) {
-          offset += 4 - (offset + state.bsCount[nextLine]) % 4;
-        } else {
-          offset++;
-        }
+      if (ch === 0x09) {
+        offset += 4 - (offset + state.bsCount[nextLine]) % 4;
+      } else if (ch === 0x20) {
+        offset++;
       } else {
         break;
       }
@@ -19465,7 +19880,7 @@ module.exports = function list(state, startLine, endLine, silent) {
     }
   }
 
-  // Finilize list
+  // Finalize list
   if (isOrdered) {
     token = state.push('ordered_list_close', 'ol', -1);
   } else {
@@ -19487,7 +19902,7 @@ module.exports = function list(state, startLine, endLine, silent) {
 };
 
 /***/ }),
-/* 231 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19555,7 +19970,7 @@ module.exports = function paragraph(state, startLine /*, endLine*/) {
 };
 
 /***/ }),
-/* 232 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19782,7 +20197,7 @@ module.exports = function reference(state, startLine, _endLine, silent) {
 };
 
 /***/ }),
-/* 233 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19790,7 +20205,7 @@ module.exports = function reference(state, startLine, _endLine, silent) {
 
 
 
-var Token = __webpack_require__(6);
+var Token = __webpack_require__(8);
 var isSpace = __webpack_require__(0).isSpace;
 
 function StateBlock(src, md, env, tokens) {
@@ -20040,7 +20455,7 @@ StateBlock.prototype.Token = Token;
 module.exports = StateBlock;
 
 /***/ }),
-/* 234 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20267,7 +20682,7 @@ module.exports = function table(state, startLine, endLine, silent) {
 };
 
 /***/ }),
-/* 235 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20288,7 +20703,7 @@ module.exports = function block(state) {
 };
 
 /***/ }),
-/* 236 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20310,7 +20725,7 @@ module.exports = function inline(state) {
 };
 
 /***/ }),
-/* 237 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20467,7 +20882,7 @@ module.exports = function linkify(state) {
 };
 
 /***/ }),
-/* 238 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20491,7 +20906,7 @@ module.exports = function inline(state) {
 };
 
 /***/ }),
-/* 239 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20607,7 +21022,7 @@ module.exports = function replace(state) {
 };
 
 /***/ }),
-/* 240 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20814,7 +21229,7 @@ module.exports = function smartquotes(state) {
 };
 
 /***/ }),
-/* 241 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20822,7 +21237,7 @@ module.exports = function smartquotes(state) {
 //
 
 
-var Token = __webpack_require__(6);
+var Token = __webpack_require__(8);
 
 function StateCore(src, md, env) {
   this.src = src;
@@ -20838,7 +21253,7 @@ StateCore.prototype.Token = Token;
 module.exports = StateCore;
 
 /***/ }),
-/* 242 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20928,7 +21343,7 @@ module.exports = function autolink(state, silent) {
 };
 
 /***/ }),
-/* 243 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20988,7 +21403,7 @@ module.exports = function backtick(state, silent) {
 };
 
 /***/ }),
-/* 244 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21036,7 +21451,7 @@ module.exports = function link_pairs(state) {
 };
 
 /***/ }),
-/* 245 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21044,7 +21459,7 @@ module.exports = function link_pairs(state) {
 
 
 
-var entities = __webpack_require__(13);
+var entities = __webpack_require__(14);
 var has = __webpack_require__(0).has;
 var isValidEntityCode = __webpack_require__(0).isValidEntityCode;
 var fromCodePoint = __webpack_require__(0).fromCodePoint;
@@ -21098,11 +21513,11 @@ module.exports = function entity(state, silent) {
 };
 
 /***/ }),
-/* 246 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// Proceess escaped chars and hardbreaks
+// Process escaped chars and hardbreaks
 
 
 
@@ -21168,7 +21583,7 @@ module.exports = function escape(state, silent) {
 };
 
 /***/ }),
-/* 247 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21176,7 +21591,7 @@ module.exports = function escape(state, silent) {
 
 
 
-var HTML_TAG_RE = __webpack_require__(14).HTML_TAG_RE;
+var HTML_TAG_RE = __webpack_require__(15).HTML_TAG_RE;
 
 function isLetter(ch) {
   /*eslint no-bitwise:0*/
@@ -21221,7 +21636,7 @@ module.exports = function html_inline(state, silent) {
 };
 
 /***/ }),
-/* 248 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21391,7 +21806,7 @@ module.exports = function image(state, silent) {
 };
 
 /***/ }),
-/* 249 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21562,7 +21977,7 @@ module.exports = function link(state, silent) {
 };
 
 /***/ }),
-/* 250 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21614,7 +22029,7 @@ module.exports = function newline(state, silent) {
 };
 
 /***/ }),
-/* 251 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21622,7 +22037,7 @@ module.exports = function newline(state, silent) {
 
 
 
-var Token = __webpack_require__(6);
+var Token = __webpack_require__(8);
 var isWhiteSpace = __webpack_require__(0).isWhiteSpace;
 var isPunctChar = __webpack_require__(0).isPunctChar;
 var isMdAsciiPunct = __webpack_require__(0).isMdAsciiPunct;
@@ -21756,7 +22171,7 @@ StateInline.prototype.Token = Token;
 module.exports = StateInline;
 
 /***/ }),
-/* 252 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21855,7 +22270,7 @@ module.exports = function text(state, silent) {
 };*/
 
 /***/ }),
-/* 253 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21894,7 +22309,7 @@ module.exports = function text_collapse(state) {
 };
 
 /***/ }),
-/* 254 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22028,7 +22443,7 @@ decode.componentChars = '';
 module.exports = decode;
 
 /***/ }),
-/* 255 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22136,7 +22551,7 @@ encode.componentChars = "-_.!~*'()";
 module.exports = encode;
 
 /***/ }),
-/* 256 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22166,7 +22581,7 @@ module.exports = function format(url) {
 };
 
 /***/ }),
-/* 257 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22502,7 +22917,7 @@ Url.prototype.parseHost = function (host) {
 module.exports = urlParse;
 
 /***/ }),
-/* 258 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22598,7 +23013,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 };
 
 /***/ }),
-/* 259 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22614,9 +23029,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(9);
-  var warning = __webpack_require__(18);
-  var ReactPropTypesSecret = __webpack_require__(7);
+  var invariant = __webpack_require__(6);
+  var warning = __webpack_require__(13);
+  var ReactPropTypesSecret = __webpack_require__(9);
   var loggedTypeFailures = {};
 }
 
@@ -22666,7 +23081,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 260 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22679,9 +23094,9 @@ module.exports = checkPropTypes;
 
 
 
-var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(9);
-var ReactPropTypesSecret = __webpack_require__(7);
+var emptyFunction = __webpack_require__(5);
+var invariant = __webpack_require__(6);
+var ReactPropTypesSecret = __webpack_require__(9);
 
 module.exports = function () {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -22725,7 +23140,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 261 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22740,13 +23155,13 @@ module.exports = function () {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(9);
-var warning = __webpack_require__(18);
-var assign = __webpack_require__(258);
+var emptyFunction = __webpack_require__(5);
+var invariant = __webpack_require__(6);
+var warning = __webpack_require__(13);
+var assign = __webpack_require__(262);
 
-var ReactPropTypesSecret = __webpack_require__(7);
-var checkPropTypes = __webpack_require__(259);
+var ReactPropTypesSecret = __webpack_require__(9);
+var checkPropTypes = __webpack_require__(263);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -23250,7 +23665,7 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 262 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23784,10 +24199,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		root.punycode = punycode;
 	}
 })(undefined);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(265)(module), __webpack_require__(22)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(269)(module), __webpack_require__(22)))
 
 /***/ }),
-/* 263 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23796,7 +24211,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 module.exports = /[\xAD\u0600-\u0605\u061C\u06DD\u070F\u08E2\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF\uFFF9-\uFFFB]|\uD804\uDCBD|\uD82F[\uDCA0-\uDCA3]|\uD834[\uDD73-\uDD7A]|\uDB40[\uDC01\uDC20-\uDC7F]/;
 
 /***/ }),
-/* 264 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23804,12 +24219,12 @@ module.exports = /[\xAD\u0600-\u0605\u061C\u06DD\u070F\u08E2\u180E\u200B-\u200F\
 
 exports.Any = __webpack_require__(21);
 exports.Cc = __webpack_require__(19);
-exports.Cf = __webpack_require__(263);
+exports.Cf = __webpack_require__(267);
 exports.P = __webpack_require__(10);
 exports.Z = __webpack_require__(20);
 
 /***/ }),
-/* 265 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23839,7 +24254,7 @@ module.exports = function (module) {
 };
 
 /***/ }),
-/* 266 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23863,11 +24278,11 @@ var _Markdown = __webpack_require__(23);
 
 var _Markdown2 = _interopRequireDefault(_Markdown);
 
-var _Output = __webpack_require__(270);
+var _Output = __webpack_require__(274);
 
 var _Output2 = _interopRequireDefault(_Output);
 
-var _Input = __webpack_require__(269);
+var _Input = __webpack_require__(273);
 
 var _Input2 = _interopRequireDefault(_Input);
 
@@ -23928,7 +24343,7 @@ var Cell = function (_Component) {
         number = number || raw.execution_count;
         var source = raw.input || [raw.source];
 
-        var language = raw.language || metadata.language || metadata.language_info && metadata.language_info.name;
+        var language = raw.language || metadata.language || metadata.language_info && metadata.language_info.name || 'python';
 
         var input = _react2.default.createElement(_Input2.default, { showCode: showCode, raw: source, language: language, number: number });
         var outputs = (raw.outputs || []).map(function (o, i) {
@@ -23980,7 +24395,7 @@ Cell.propTypes = {
 exports.default = Cell;
 
 /***/ }),
-/* 267 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24116,7 +24531,7 @@ var DisplayData = function (_Component) {
 exports.default = DisplayData;
 
 /***/ }),
-/* 268 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24177,7 +24592,7 @@ var DisplayError = function (_Component) {
 exports.default = DisplayError;
 
 /***/ }),
-/* 269 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24262,7 +24677,7 @@ Input.propTypes = {
 exports.default = Input;
 
 /***/ }),
-/* 270 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24286,11 +24701,11 @@ var _ansi_up = __webpack_require__(11);
 
 var _ansi_up2 = _interopRequireDefault(_ansi_up);
 
-var _DisplayData = __webpack_require__(267);
+var _DisplayData = __webpack_require__(271);
 
 var _DisplayData2 = _interopRequireDefault(_DisplayData);
 
-var _DisplayError = __webpack_require__(268);
+var _DisplayError = __webpack_require__(272);
 
 var _DisplayError2 = _interopRequireDefault(_DisplayError);
 
@@ -24368,7 +24783,7 @@ Output.propTypes = {
 exports.default = Output;
 
 /***/ }),
-/* 271 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24388,7 +24803,7 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Cell = __webpack_require__(266);
+var _Cell = __webpack_require__(270);
 
 var _Cell2 = _interopRequireDefault(_Cell);
 
@@ -24441,7 +24856,7 @@ Worksheet.propTypes = {
 exports.default = Worksheet;
 
 /***/ }),
-/* 272 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24537,7 +24952,7 @@ JuptyerRenderer.propTypes = {
 exports.default = JuptyerRenderer;
 
 /***/ }),
-/* 273 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(12)(undefined);
@@ -24551,7 +24966,7 @@ exports.push([module.i, "/*\n\ngithub.com style (c) Vasily Polovnyov <vast@white
 
 
 /***/ }),
-/* 274 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(12)(undefined);
@@ -24565,7 +24980,7 @@ exports.push([module.i, "\n.jupyter-default {}\n\n.jupyter-default .stderr {\n  
 
 
 /***/ }),
-/* 275 */
+/* 279 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -26697,13 +27112,13 @@ module.exports = {
 };
 
 /***/ }),
-/* 276 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(273);
+var content = __webpack_require__(277);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(24)(content, {});
