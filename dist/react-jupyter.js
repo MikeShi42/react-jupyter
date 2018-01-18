@@ -2201,7 +2201,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var markdown = (0, _markdownIt2.default)({
   linkify: true,
-  html: true
+  html: false
 }).use((0, _markdownItMathjax2.default)());
 
 var Markdown = function (_Component) {
@@ -12801,7 +12801,11 @@ var joinText = function joinText(text) {
   }
 };
 
-var display_priority = ["png", "image/png", "jpeg", "image/jpeg", "svg", "text/svg+xml", "html", "text/html", "text/markdown", "latex", "text/latex", "javascript", "application/javascript", "text", "text/plain"];
+var display_priority = ["png", "image/png", "jpeg", "image/jpeg",
+// "svg", "text/svg+xml", "html", "text/html",
+"text/markdown", "latex", "text/latex",
+// "javascript", "application/javascript",
+"text", "text/plain"];
 
 var DisplayData = function (_Component) {
   _inherits(DisplayData, _Component);
@@ -12835,11 +12839,11 @@ var DisplayData = function (_Component) {
         });
       }
 
-      if (['javascript', 'application/javascript'].includes(format)) {
-        return _react2.default.createElement('script', {
-          dangerouslySetInnerHTML: { __html: data }
-        });
-      }
+      // if (['javascript', 'application/javascript'].includes(format)) {
+      //   return <script
+      //     dangerouslySetInnerHTML={{__html: data}}
+      //     ></script>
+      // }
 
       if (['latex', 'text/latex'].includes(format)) {
         return _react2.default.createElement(
@@ -12856,20 +12860,18 @@ var DisplayData = function (_Component) {
         });
       }
 
-      if (['html', 'text/html'].includes(format)) {
-        return _react2.default.createElement('div', {
-          className: 'html-output',
-          dangerouslySetInnerHTML: { __html: joinText(data) }
-        });
-      }
-
-      if (['svg', 'text/svg+xml'].includes(format)) {
-        return _react2.default.createElement(
-          'div',
-          { className: 'svg-output' },
-          joinText(data)
-        );
-      }
+      // if (['html', 'text/html'].includes(format)) {
+      //   return <div
+      //     className="html-output"
+      //     dangerouslySetInnerHTML={{__html: joinText(data)}}
+      //   ></div>
+      // }
+      //
+      // if (['svg', 'text/svg+xml'].includes(format)) {
+      //   return <div className="svg-output">
+      //     {joinText(data)}
+      //   </div>
+      // }
 
       if (['jpeg', 'image/jpeg'].includes(format)) {
         return _react2.default.createElement('img', { alt: 'cell-output', className: 'image-output',

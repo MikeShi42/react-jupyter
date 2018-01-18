@@ -5,7 +5,7 @@ import markdownMathjax from 'markdown-it-mathjax'
 
 const markdown = markdownIt({
   linkify: true,
-  html: true,
+  html: false,
 }).use(markdownMathjax())
 
 

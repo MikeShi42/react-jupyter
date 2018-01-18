@@ -14,9 +14,9 @@ const joinText = text => {
 
 const display_priority = [
     "png", "image/png", "jpeg", "image/jpeg",
-    "svg", "text/svg+xml", "html", "text/html",
+    // "svg", "text/svg+xml", "html", "text/html",
     "text/markdown", "latex", "text/latex",
-    "javascript", "application/javascript",
+    // "javascript", "application/javascript",
     "text", "text/plain"
 ]
 
@@ -44,11 +44,11 @@ class DisplayData extends Component {
       )
     }
 
-    if (['javascript', 'application/javascript'].includes(format)) {
-      return <script
-        dangerouslySetInnerHTML={{__html: data}}
-        ></script>
-    }
+    // if (['javascript', 'application/javascript'].includes(format)) {
+    //   return <script
+    //     dangerouslySetInnerHTML={{__html: data}}
+    //     ></script>
+    // }
 
     if (['latex', 'text/latex'].includes(format)) {
       return <div className="latex-output">{data}</div>
@@ -61,18 +61,18 @@ class DisplayData extends Component {
       />
     }
 
-    if (['html', 'text/html'].includes(format)) {
-      return <div
-        className="html-output"
-        dangerouslySetInnerHTML={{__html: joinText(data)}}
-      ></div>
-    }
-
-    if (['svg', 'text/svg+xml'].includes(format)) {
-      return <div className="svg-output">
-        {joinText(data)}
-      </div>
-    }
+    // if (['html', 'text/html'].includes(format)) {
+    //   return <div
+    //     className="html-output"
+    //     dangerouslySetInnerHTML={{__html: joinText(data)}}
+    //   ></div>
+    // }
+    //
+    // if (['svg', 'text/svg+xml'].includes(format)) {
+    //   return <div className="svg-output">
+    //     {joinText(data)}
+    //   </div>
+    // }
 
     if (['jpeg', 'image/jpeg'].includes(format)) {
       return <img alt="cell-output" className="image-output"
