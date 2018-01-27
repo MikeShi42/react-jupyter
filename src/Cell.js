@@ -50,7 +50,12 @@ class Cell extends Component {
 
         const input = <Input showCode={showCode} raw={source} language={language} number={number}/>
         const outputs = (raw.outputs || []).map((o, i) => {
-            return <Output showCode={showCode} raw={o} number={number} key={`output${i}`}/>
+            return <Output
+              showCode={showCode}
+              raw={o}
+              number={number}
+              key={`output${i}`}
+            />
         })
         // const outputs = coalesceStreams(raw_outputs)
         return (

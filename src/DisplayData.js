@@ -75,7 +75,17 @@ class DisplayData extends Component {
     // }
 
     if (['jpeg', 'image/jpeg'].includes(format)) {
-      return <img alt="cell-output" className="image-output"
+      let imageWidth;
+
+      if (
+        raw.metadata != null &&
+        'image/jpeg' in raw.metadata &&
+        'width' in raw.metadata['image/jpeg']
+      ) {
+        imageWidth = raw.metadata['image/jpeg'].width;
+      }
+
+      return <img alt="cell-output" className="image-output" width={imageWidth}
         src={"data:image/jpeg;base64," + joinText(data).replace(/\n/g, "")}
       />
     }

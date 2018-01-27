@@ -12713,7 +12713,12 @@ var Cell = function (_Component) {
 
         var input = _react2.default.createElement(_Input2.default, { showCode: showCode, raw: source, language: language, number: number });
         var outputs = (raw.outputs || []).map(function (o, i) {
-          return _react2.default.createElement(_Output2.default, { showCode: showCode, raw: o, number: number, key: 'output' + i });
+          return _react2.default.createElement(_Output2.default, {
+            showCode: showCode,
+            raw: o,
+            number: number,
+            key: 'output' + i
+          });
         });
         // const outputs = coalesceStreams(raw_outputs)
         return _react2.default.createElement(
@@ -12874,7 +12879,13 @@ var DisplayData = function (_Component) {
       // }
 
       if (['jpeg', 'image/jpeg'].includes(format)) {
-        return _react2.default.createElement('img', { alt: 'cell-output', className: 'image-output',
+        var imageWidth = void 0;
+
+        if (raw.metadata != null && 'image/jpeg' in raw.metadata && 'width' in raw.metadata['image/jpeg']) {
+          imageWidth = raw.metadata['image/jpeg'].width;
+        }
+
+        return _react2.default.createElement('img', { alt: 'cell-output', className: 'image-output', width: imageWidth,
           src: "data:image/jpeg;base64," + joinText(data).replace(/\n/g, "")
         });
       }
