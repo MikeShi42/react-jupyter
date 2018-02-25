@@ -7,7 +7,7 @@ module.exports = {
   entry: path.resolve('src/index.js'),
   output: {
     path: path.resolve('dist/'),
-    libraryTarget: 'umd',
+    libraryTarget: 'commonjs2',
     filename: 'react-jupyter.js'
   },
   module: {
